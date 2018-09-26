@@ -7,7 +7,8 @@ using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/user")]
+    [Produces("application/json")]
+    [Route("api/user/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -17,10 +18,10 @@ namespace WebAPI.Controllers
         {
             _handler = new UserHandler();
         }
-        [HttpGet("/{id}")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult GetUser(int id)
+        public ActionResult<User> GetUser(int id)
         {
             try
             {
@@ -40,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<User>))]
+        [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult GetAllUsers()
+        public ActionResult<List<User>> GetAllUsers()
         {
             try
             {
@@ -63,11 +64,11 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
-        public IActionResult CreateUser()
+        public IActionResult CreateUser([FromForm] Login user)
         {
             try
             {
-                _handler.CreateUser();
+                _handler.CreateUser(user);
 
                 return Ok();
             }
@@ -79,7 +80,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult UpdateUser([FromBody] User user, int id)
@@ -97,7 +98,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
             try

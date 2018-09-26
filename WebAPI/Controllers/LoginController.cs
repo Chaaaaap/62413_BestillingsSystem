@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using Common;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,8 @@ using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/login")]
+    [Produces("application/json")]
+    [Route("api/login/")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -19,9 +19,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(200)]
         [ProducesResponseType(401)]
-        public IActionResult Login([FromBody] Login userLogin)
+        public ActionResult<User> Login([FromForm] Login userLogin)
         {
             try
             {
@@ -31,12 +31,20 @@ namespace WebAPI.Controllers
                 {
                     return Ok(userFromDb);
                 }
+                else
+                {
+                    return Unauthorized();
+                }
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e);
+                return BadRequest();
             }
-            return Unauthorized();
+        }
+        ~LoginController()
+        {
+            _handler.Dispose();
         }
     }
 }

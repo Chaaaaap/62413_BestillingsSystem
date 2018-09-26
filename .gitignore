@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/WebAPI/Properties/PublishProfiles
+/WebAPI/wwwroot/WebAPI.runtimeconfig.json
+/WebAPI/wwwroot/WebAPI.runtimeconfig.dev.json
+/WebAPI/wwwroot/WebAPI.deps.json

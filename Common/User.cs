@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common
 {
@@ -12,5 +8,15 @@ namespace Common
         public string Username { get; set; }
         public string Password { get; set; }
         public DateTime? LatestLogin { get; set; }
+
+        public User() { }
+
+        public User(long id, string username, string password, DateTime? latestLogin = null)
+        {
+            Id = id;
+            Username = username;
+            Password = password;
+            LatestLogin = latestLogin;
+        }
     }
 }
