@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var userFromDb = _handler.GetUser(userLogin.Username);
+                var userFromDb = _handler.GetUserForLogin(userLogin.Username);
 
                 if (userFromDb != null && userLogin.Password == userFromDb.Password)
                 {

@@ -23,7 +23,7 @@ namespace WebAPI.Handlers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public User GetUser(string username)
+        public User GetUserForLogin(string username)
         {
             _conn.Open();
             var sql = "SELECT * FROM dbo.[user] where Username = '" + username + "';";

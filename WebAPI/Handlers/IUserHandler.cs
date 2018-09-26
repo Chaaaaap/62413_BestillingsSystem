@@ -6,7 +6,7 @@ namespace WebAPI.Handlers
     interface IUserHandler
     {
         User GetUser(int i);
-        User GetUser(string username);
+        User GetUserForLogin(string username);
         List<User> GetAllUsers();
         void CreateUser(Login user);
         void UpdateUser(int id, User user);
