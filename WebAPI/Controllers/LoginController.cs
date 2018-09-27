@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
@@ -29,6 +33,23 @@ namespace WebAPI.Controllers
 
                 if (userFromDb != null && userLogin.Password == userFromDb.Password)
                 {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(AppSettings.Secret);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(ClaimTypes.Name, userFromDb.Id.ToString())
+                        }),
+                        Expires = DateTime.Now.AddHours(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    userFromDb.Token = tokenHandler.WriteToken(token);
+                    userFromDb.LatestLogin = DateTime.Now;
+                    _handler.UpdateUser(userFromDb.Id, userFromDb);
+
                     return Ok(userFromDb);
                 }
                 else

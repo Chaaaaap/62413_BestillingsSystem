@@ -26,12 +26,12 @@ namespace WebAPI.Handlers
         public User GetUserForLogin(string username)
         {
             _conn.Open();
-            var sql = "SELECT * FROM dbo.[user] where Username = '" + username + "';";
+            var sql = "SELECT * FROM dbo.[user] where Username = @Username;";
             var cmd = _conn.CreateCommand();
             cmd.CommandText = sql;
 
-            //cmd.Parameters.Add("@Username", SqlDbType.Text);
-            //cmd.Parameters["@Username"].Value = username;
+            cmd.Parameters.Add("@Username", SqlDbType.VarChar);
+            cmd.Parameters["@Username"].Value = username;
 
             var dataReader = cmd.ExecuteReader();
 
@@ -55,7 +55,7 @@ namespace WebAPI.Handlers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public User GetUser(int id)
+        public User GetUser(long id)
         {
             _conn.Open();
             var sql = "SELECT * FROM dbo.[user] where Id = @Id;"; // + id + ";";
@@ -112,13 +112,13 @@ namespace WebAPI.Handlers
         public void CreateUser(Login user)
         {
             _conn.Open();
-            var sql = String.Format("INSERT INTO dbo.[user] (Username, Password) VALUES('{0}', '{1}');", user.Username, user.Password);
+            var sql = "INSERT INTO dbo.[user] (Username, Password) VALUES(@Username, @Password);";
 
             var cmd = _conn.CreateCommand();
             cmd.CommandText = sql;
 
-            //cmd.Parameters.AddWithValue("@Username", user.Username);
-            //cmd.Parameters.AddWithValue("@Password", user.Password);
+            cmd.Parameters.AddWithValue("@Username", user.Username);
+            cmd.Parameters.AddWithValue("@Password", user.Password);
             //cmd.Parameters["@Username"].Value = user.Username;
             //cmd.Parameters["@Password"].Value = user.Password;
 
@@ -133,10 +133,22 @@ namespace WebAPI.Handlers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
-        public void UpdateUser(int id, User user)
+        public void UpdateUser(long id, User user)
         {
             _conn.Open();
-            //var sql = "";
+            var sql = "UPDATE dbo.[user] SET Username = @Username, Password = @Password where Id = @Id;"; // + id + ";";
+            var cmd = _conn.CreateCommand();
+            cmd.CommandText = sql;
+
+            cmd.Parameters.Add("@Id", SqlDbType.BigInt);
+            cmd.Parameters.Add("@Username", SqlDbType.VarChar);
+            cmd.Parameters.Add("@Password", SqlDbType.VarChar);
+            cmd.Parameters["@Id"].Value = id;
+            cmd.Parameters["@Username"].Value = user.Username;
+            cmd.Parameters["@Password"].Value = user.Password;
+
+
+            cmd.ExecuteNonQuery();
 
             _conn.Close();
         }
@@ -145,14 +157,14 @@ namespace WebAPI.Handlers
         /// Deletes a user with a certain id
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteUser(int id)
+        public void DeleteUser(long id)
         {
             _conn.Open();
-            var sql = "DELETE FROM dbo.[user] WHERE Id = " + id + ";";
+            var sql = "DELETE FROM dbo.[user] WHERE Id = @Id;";
             var cmd = new SqlCommand(sql, _conn);
 
-            //cmd.Parameters.Add("@Id", SqlDbType.BigInt);
-            //cmd.Parameters["@Id"].Value = id;
+            cmd.Parameters.Add("@Id", SqlDbType.BigInt);
+            cmd.Parameters["@Id"].Value = id;
 
             cmd.ExecuteNonQuery();
 

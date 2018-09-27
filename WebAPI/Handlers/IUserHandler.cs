@@ -5,11 +5,11 @@ namespace WebAPI.Handlers
 {
     interface IUserHandler
     {
-        User GetUser(int i);
+        User GetUser(long i);
         User GetUserForLogin(string username);
         List<User> GetAllUsers();
         void CreateUser(Login user);
-        void UpdateUser(int id, User user);
-        void DeleteUser(int id);
+        void UpdateUser(long id, User user);
+        void DeleteUser(long id);
     }
 }

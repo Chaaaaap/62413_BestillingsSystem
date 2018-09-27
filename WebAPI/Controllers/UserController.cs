@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/user/")]
     [ApiController]
@@ -83,7 +85,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateUser([FromBody] User user, int id)
+        public IActionResult UpdateUser([FromForm] User user, int id)
         {
             try
             {
