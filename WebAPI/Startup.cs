@@ -85,7 +85,10 @@ namespace WebAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
+
+
         }
     }
 }
