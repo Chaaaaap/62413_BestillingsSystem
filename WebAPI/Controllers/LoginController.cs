@@ -50,6 +50,8 @@ namespace WebAPI.Controllers
                     userFromDb.LatestLogin = DateTime.Now;
                     _handler.UpdateUser(userFromDb.Id, userFromDb);
 
+                    userFromDb.Password = null;
+
                     return Ok(userFromDb);
                 }
                 else
