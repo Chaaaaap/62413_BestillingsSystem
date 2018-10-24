@@ -11,7 +11,7 @@ using WebAPI.Handlers;
 namespace WebAPI.Controllers
 {
     [Produces("application/json")]
-    [Route("api/login/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
