@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    class Order
+    public class Order
     {
         public long Id { get; set; }
-        public List<Item> items { get; set; }
-        public double totalPrice { get; set; }
-        public long userId { get; set; }
+        public List<Item> Items { get; set; }
+        public double TotalPrice { get; set; }
+        public long UserId { get; set; }
         public Order() { }
     }
 }
