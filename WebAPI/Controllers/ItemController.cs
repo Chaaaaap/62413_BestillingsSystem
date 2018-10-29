@@ -68,5 +68,60 @@ namespace WebAPI.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateItem([FromForm] Item item)
+        {
+            try
+            {
+                _handler.CreateItem(item);
+
+                return Ok();
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e);
+
+                return Unauthorized();
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateItem([FromForm] Item item, int id)
+        {
+            try
+            {
+                _handler.UpdateItem(id, item);
+
+                return Ok();
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteItem(int id)
+        {
+            try
+            {
+                _handler.DeleteItem(id);
+
+                return Ok();
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }

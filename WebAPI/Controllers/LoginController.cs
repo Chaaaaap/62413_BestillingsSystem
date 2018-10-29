@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Kig her: " + e.Message);
                 return BadRequest();
             }
         }
