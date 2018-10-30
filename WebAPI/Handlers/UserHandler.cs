@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.Data.SqlClient;
 using Common;
 using MySql.Data.MySqlClient;
@@ -29,17 +30,15 @@ namespace WebAPI.Handlers
 
             _conn.Open();
             
-            var sql = "SELECT * FROM Users where Username = '@Username'";
+            var sql = "SELECT * FROM Users where Username=@Username";
             var cmd = new MySqlCommand(sql, _conn);
 
-            cmd.Parameters.Add(new MySqlParameter("@Username", username));
-            //cmd.Parameters["@Username"].Value = username;
+            cmd.Parameters.AddWithValue("@Username", username);
 
             var dataReader = cmd.ExecuteReader();
 
             User user = null;
-
-
+            
 
             while (dataReader.Read())
             {
@@ -65,8 +64,8 @@ namespace WebAPI.Handlers
             var sql = "SELECT * FROM Users where Id = @Id;"; // + id + ";";
             var cmd = new MySqlCommand(sql, _conn);
 
-            cmd.Parameters.Add("@Id", SqlDbType.BigInt);
-            cmd.Parameters["@Id"].Value = id;
+            cmd.Parameters.AddWithValue("@Id", id);
+
             User user = null;
             var dataReader = cmd.ExecuteReader();
             while (dataReader.Read())
@@ -120,8 +119,6 @@ namespace WebAPI.Handlers
 
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
-            //cmd.Parameters["@Username"].Value = user.Username;
-            //cmd.Parameters["@Password"].Value = user.Password;
 
             cmd.ExecuteNonQuery();
 
@@ -141,12 +138,9 @@ namespace WebAPI.Handlers
 
             var cmd = new MySqlCommand(sql, _conn);
 
-            cmd.Parameters.Add("@Id", SqlDbType.BigInt);
-            cmd.Parameters.Add("@Username", SqlDbType.VarChar);
-            cmd.Parameters.Add("@Password", SqlDbType.VarChar);
-            cmd.Parameters["@Id"].Value = id;
-            cmd.Parameters["@Username"].Value = user.Username;
-            cmd.Parameters["@Password"].Value = user.Password;
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Username", user.Username);
+            cmd.Parameters.AddWithValue("@Password", user.Password);
 
 
             cmd.ExecuteNonQuery();
@@ -164,8 +158,7 @@ namespace WebAPI.Handlers
             var sql = "DELETE FROM Users WHERE Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
-            cmd.Parameters.Add("@Id", SqlDbType.BigInt);
-            cmd.Parameters["@Id"].Value = id;
+            cmd.Parameters.AddWithValue("@Id", id);
 
             cmd.ExecuteNonQuery();
 

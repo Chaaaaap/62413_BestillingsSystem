@@ -8,7 +8,7 @@ using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    
     [Produces("application/json")]
     [Route("api/user/")]
     [ApiController]
@@ -20,6 +20,8 @@ namespace WebAPI.Controllers
         {
             _handler = new UserHandler();
         }
+
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -42,6 +44,7 @@ namespace WebAPI.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -82,6 +85,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -100,6 +104,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
