@@ -9,7 +9,7 @@ namespace Common
     public class Order
     {
         public long Id { get; set; }
-        public List<Item> Items { get; set; }
+        public Dictionary<Item, int> ItemsAmount { get; set; }
         public double TotalPrice { get; set; }
         public long UserId { get; set; }
         public Order() { }

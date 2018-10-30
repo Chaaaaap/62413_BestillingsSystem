@@ -24,12 +24,12 @@ namespace WebAPI.Handlers
             throw new NotImplementedException();
         }
 
-        public List<Order> GetAllOrder()
+        public List<Order> GetAllOrders()
         {
             throw new NotImplementedException();
         }
 
-        public List<Order> GetAllUserOrder(long id)
+        public List<Order> GetAllUserOrders(long id)
         {
             throw new NotImplementedException();
         }

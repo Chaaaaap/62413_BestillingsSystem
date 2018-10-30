@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Common;
+using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
 {
     public class UserHandler : IDisposable, IUserHandler
     {
-        private readonly SqlConnection _conn;
+        private readonly MySqlConnection _conn;
 
         // We need a SQL Connection
         public UserHandler()
         {
             var conString = AppSettings.ConnectionString;
-            _conn = new SqlConnection(conString);
+            _conn = new MySqlConnection(conString);
 
         }
 
@@ -25,17 +26,20 @@ namespace WebAPI.Handlers
         /// <returns></returns>
         public User GetUserForLogin(string username)
         {
-            _conn.Open();
-            var sql = "SELECT * FROM dbo.[user] where Username = @Username;";
-            var cmd = _conn.CreateCommand();
-            cmd.CommandText = sql;
 
-            cmd.Parameters.Add("@Username", SqlDbType.VarChar);
-            cmd.Parameters["@Username"].Value = username;
+            _conn.Open();
+            
+            var sql = "SELECT * FROM Users where Username = '@Username'";
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.Add(new MySqlParameter("@Username", username));
+            //cmd.Parameters["@Username"].Value = username;
 
             var dataReader = cmd.ExecuteReader();
 
             User user = null;
+
+
 
             while (dataReader.Read())
             {
@@ -58,9 +62,8 @@ namespace WebAPI.Handlers
         public User GetUser(long id)
         {
             _conn.Open();
-            var sql = "SELECT * FROM dbo.[user] where Id = @Id;"; // + id + ";";
-            var cmd = _conn.CreateCommand();
-            cmd.CommandText = sql;
+            var sql = "SELECT * FROM Users where Id = @Id;"; // + id + ";";
+            var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.Add("@Id", SqlDbType.BigInt);
             cmd.Parameters["@Id"].Value = id;
@@ -86,9 +89,8 @@ namespace WebAPI.Handlers
         public List<User> GetAllUsers()
         {
             _conn.Open();
-            const string sql = "SELECT * FROM dbo.[user];";
-            var cmd = _conn.CreateCommand();
-            cmd.CommandText = sql;
+            const string sql = "SELECT * FROM Users;";
+            var cmd = new MySqlCommand(sql, _conn);
 
             var userList = new List<User>();
             var dataReader = cmd.ExecuteReader();
@@ -112,10 +114,9 @@ namespace WebAPI.Handlers
         public void CreateUser(Login user)
         {
             _conn.Open();
-            var sql = "INSERT INTO dbo.[user] (Username, Password) VALUES(@Username, @Password);";
+            var sql = "INSERT INTO Users (Username, Password) VALUES(@Username, @Password);";
 
-            var cmd = _conn.CreateCommand();
-            cmd.CommandText = sql;
+            var cmd = new MySqlCommand(sql, _conn); ;
 
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
@@ -136,9 +137,9 @@ namespace WebAPI.Handlers
         public void UpdateUser(long id, User user)
         {
             _conn.Open();
-            var sql = "UPDATE dbo.[user] SET Username = @Username, Password = @Password where Id = @Id;"; // + id + ";";
-            var cmd = _conn.CreateCommand();
-            cmd.CommandText = sql;
+            var sql = "UPDATE Users SET Username = @Username, Password = @Password where Id = @Id;"; // + id + ";";
+
+            var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.Add("@Id", SqlDbType.BigInt);
             cmd.Parameters.Add("@Username", SqlDbType.VarChar);
@@ -160,8 +161,8 @@ namespace WebAPI.Handlers
         public void DeleteUser(long id)
         {
             _conn.Open();
-            var sql = "DELETE FROM dbo.[user] WHERE Id = @Id;";
-            var cmd = new SqlCommand(sql, _conn);
+            var sql = "DELETE FROM Users WHERE Id = @Id;";
+            var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.Add("@Id", SqlDbType.BigInt);
             cmd.Parameters["@Id"].Value = id;
