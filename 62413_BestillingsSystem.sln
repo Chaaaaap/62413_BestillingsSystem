@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{ACBDA01F-CAB5-43D8-BC4B-D2945E106C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{A01B2650-A7CB-4D86-8A47-951651AAAAE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{A01B2650-A7CB-4D86-8A47-951651AAAAE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF", "WPF\WPF.csproj", "{30E6CCF7-4BB7-49B4-B0AB-5B9DCDD167E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A01B2650-A7CB-4D86-8A47-951651AAAAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A01B2650-A7CB-4D86-8A47-951651AAAAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A01B2650-A7CB-4D86-8A47-951651AAAAE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E6CCF7-4BB7-49B4-B0AB-5B9DCDD167E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E6CCF7-4BB7-49B4-B0AB-5B9DCDD167E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E6CCF7-4BB7-49B4-B0AB-5B9DCDD167E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E6CCF7-4BB7-49B4-B0AB-5B9DCDD167E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -39,7 +39,11 @@ namespace Common
 
         public static string HashString(string s)
         {
-            byte[] salt;
+            var salt = new byte[16];
+            return HashString(s, out salt);
+        }
+        public static string HashString(string s, out byte[] salt)
+        {
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
             var pdkdf2 = new Rfc2898DeriveBytes(s, salt, 10000);

@@ -2,6 +2,7 @@
 using System.Security;
 using System.Windows.Input;
 using DesktopClient.Helpers;
+using DesktopClient.Views;
 
 namespace DesktopClient.ViewModels
 {
@@ -10,13 +11,23 @@ namespace DesktopClient.ViewModels
 
         public LoginViewModel()
         {
-            LoginCommand = new CommandHandler(Login);
+            InitializeCommands();
         }
+        RegistrationWindow _regWindow;
 
         public ICommand LoginCommand
         {
             get;
             private set;
+        }
+
+        public ICommand OpenRegisterCommand { get; private set; }
+
+        private void InitializeCommands()
+        {
+            LoginCommand = new CommandHandler(Login);
+            OpenRegisterCommand = new CommandHandler(OpenRegister);
+
         }
         private string _username;
 
@@ -59,11 +70,17 @@ namespace DesktopClient.ViewModels
             var currentUser = Service.Login(Username, securePassword).Result;
 
             if (currentUser != null)
+            {
                 ApplicationInfo.CurrentUser = currentUser;
+            }
             else
                 throw new ArgumentException();
         }
 
-        
+        private void OpenRegister(object parameter)
+        {
+            _regWindow = new RegistrationWindow();
+            _regWindow.Show();
+        }
     }
 }
