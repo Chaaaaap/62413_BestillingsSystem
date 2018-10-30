@@ -51,7 +51,7 @@ namespace WebAPI.Handlers
                 itemList.Add(item);
             }
             _conn.Close();
-            return userList;
+            return itemList;
         }
 
         public Item GetItem(long id)

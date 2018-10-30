@@ -113,12 +113,14 @@ namespace WebAPI.Handlers
         public void CreateUser(Login user)
         {
             _conn.Open();
-            var sql = "INSERT INTO Users (Username, Password) VALUES(@Username, @Password);";
+            var sql = "INSERT INTO Users (Username, Password, salt, Email) VALUES(@Username, @Password, @Salt, @Email);";
 
             var cmd = new MySqlCommand(sql, _conn); ;
 
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
+            cmd.Parameters.AddWithValue("@Salt", user.Salt);
+            cmd.Parameters.AddWithValue("@Email", user.Email);
 
             cmd.ExecuteNonQuery();
 
