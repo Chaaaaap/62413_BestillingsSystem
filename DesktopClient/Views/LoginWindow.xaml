@@ -13,6 +13,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -20,26 +23,32 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-
-        <cc:TextBox Grid.Row="0" Grid.Column="1" 
+        <Label Grid.Row="0" Grid.Column="1" Content="Username" Style="{StaticResource LoginPageLabel}"/>
+        <cc:TextBox Grid.Row="1" Grid.Column="1" 
                  Text="{Binding Username}" 
                  Name="UserNameTextBox"
-                 Style="{StaticResource LoginTextBox}"
-                 Watermark="Username"/>
-        <PasswordBox  Grid.Row="1" Grid.Column="1" 
+                 Style="{StaticResource LoginPage}"
+                 />
+        <Label Grid.Row="2" Grid.Column="1" Content="Password" Style="{StaticResource LoginPageLabel}"/>
+        <PasswordBox  Grid.Row="3" Grid.Column="1" 
                       Name="PasswordBox"
                       Style="{StaticResource LoginPage}"/>
 
-        <Button Grid.Row="2" Grid.Column="1" 
+        <Button Grid.Row="4" Grid.Column="1" 
                 Command="{Binding LoginCommand}"
                 CommandParameter="{Binding ElementName=LoginView}" 
                 Content="Login"
                 Name="LoginButton"
-                Style="{StaticResource LoginPage}"/>
-        <Button Grid.Row="3" Grid.Column="1"
+                Style="{StaticResource LoginButton}"/>
+        <Button Grid.Row="5" Grid.Column="1"
                 Command="{Binding OpenRegisterCommand}"
                 Content="Don't have a user yet? Click here to register!"
                 Style="{StaticResource LinkButton}"/>
+        <Label Grid.Row="6" Grid.Column="1"
+               Content="Username or password is incorrect"
+               Style="{StaticResource LoginPageLabel}"
+               Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Hidden}"
+               Foreground="{StaticResource ValidationErrorBrush}"/>
 
     </Grid>
 </Window>

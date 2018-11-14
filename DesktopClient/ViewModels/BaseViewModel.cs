@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
-    internal class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public BaseViewModel Parent { get; set; }
+
+        protected BaseViewModel(BaseViewModel parent)
+        {
+            Parent = parent;
+        }
         
         public void OnPropertyChanged(string property)
         {

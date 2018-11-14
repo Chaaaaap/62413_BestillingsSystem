@@ -13,7 +13,7 @@ namespace DesktopClient.Views
         public RegistrationWindow()
         {
             InitializeComponent();
-            this.DataContext = new RegistrationViewModel();
+            this.DataContext = new RegistrationViewModel(null);
         }
 
         public SecureString Password { get; }

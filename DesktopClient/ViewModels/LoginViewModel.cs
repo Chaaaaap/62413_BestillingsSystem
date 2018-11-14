@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security;
 using System.Windows.Input;
+using Common.Utils;
 using DesktopClient.Helpers;
 using DesktopClient.Views;
 
@@ -9,7 +10,7 @@ namespace DesktopClient.ViewModels
     class LoginViewModel : BaseViewModel
     {
 
-        public LoginViewModel()
+        public LoginViewModel(BaseViewModel parent) : base(parent)
         {
             InitializeCommands();
         }
@@ -25,7 +26,7 @@ namespace DesktopClient.ViewModels
 
         private void InitializeCommands()
         {
-            LoginCommand = new CommandHandler(Login);
+            LoginCommand = new CommandHandler(Login, CanExecuteLogin);
             OpenRegisterCommand = new CommandHandler(OpenRegister);
 
         }
@@ -57,9 +58,34 @@ namespace DesktopClient.ViewModels
             }
         }
 
-        public void Login(object parameter)
+        private bool _hasError = false;
+
+        public bool HasError
         {
-            var passwordBox = parameter as IHavePassword;
+            get => _hasError;
+            set
+            {
+                if (value == _hasError)
+                    return;
+                _hasError = value;
+                OnPropertyChanged(nameof(HasError));
+            }
+        }
+
+        public bool CanExecuteLogin(object sender)
+        {
+            return !string.IsNullOrWhiteSpace(Username);
+        }
+
+        public void Login(object sender)
+        {
+            if (!Validations.ValidateStringLength(Username, 8))
+            {
+                HasError = true;
+                return;
+            }
+
+            var passwordBox = sender as IHavePassword;
             if (passwordBox == null)
             {
                 return;
@@ -72,9 +98,13 @@ namespace DesktopClient.ViewModels
             if (currentUser != null)
             {
                 ApplicationInfo.CurrentUser = currentUser;
+                if (sender is LoginWindow window)
+                    window.Close();
             }
             else
-                throw new ArgumentException();
+                HasError = true;
+
+
         }
 
         private void OpenRegister(object parameter)

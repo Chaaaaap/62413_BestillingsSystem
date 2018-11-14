@@ -52,6 +52,7 @@
     <Compile Include="Utils\JsonUtility.cs" />
     <Compile Include="Utils\StringUtility.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Utils\Validations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

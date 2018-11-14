@@ -7,20 +7,31 @@
              xmlns:local="clr-namespace:WPF.Styles"
              mc:Ignorable="d">
 
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="ValidationErrorBrush" Color="Red"/>
+    <SolidColorBrush x:Key="RibbonBackgroundBrush" Color="LightGray"/>
+
+    <!-- Styles -->
     <Style TargetType="{x:Type Control}" x:Key="LoginPage">
-        <Setter Property="Margin" Value="0 0 0 5"/>
         <Setter Property="Height" Value="23"/>
         <Setter Property="Width" Value="170"/>
         <Setter Property="IsTabStop" Value="True"/>
         <Setter Property="Padding" Value="5, 2, 0, 0"/>
     </Style>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LoginPage}" x:Key="LoginPageLabel">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+    </Style>
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LoginPage}" x:Key="LoginButton">
+        <Setter Property="Margin" Value="0 15 0 5" />
+    </Style>
     <Style TargetType="{x:Type Button}" x:Key="LinkButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Margin" Value="0 10 0 5"/>
+        <Setter Property="IsTabStop" Value="True" />
     </Style>
-    <Style TargetType="{x:Type TextBox}" x:Key="LoginTextBox" BasedOn="{StaticResource LoginPage}">
+    
 
-    </Style>
 
 </ResourceDictionary>

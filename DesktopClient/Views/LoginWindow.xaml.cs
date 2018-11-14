@@ -25,7 +25,7 @@ namespace DesktopClient
         public LoginWindow()
         {
             InitializeComponent();
-            this.DataContext = new LoginViewModel();
+            this.DataContext = new LoginViewModel(null);
         }
 
 

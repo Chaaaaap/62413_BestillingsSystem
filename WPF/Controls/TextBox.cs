@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -18,16 +13,7 @@ namespace WPF.Controls
             typeof(TextBox),
             new FrameworkPropertyMetadata((object)null, new PropertyChangedCallback(OnWatermarkChanged)));
 
-
-
-        #region Private Fields
-
-        /// <summary>
-        /// Dictionary of ItemsControls
-        /// </summary>
-        private static readonly Dictionary<object, ItemsControl> ItemsControls = new Dictionary<object, ItemsControl>();
-
-        #endregion
+        #region Watermark
 
         /// <summary>
         /// Gets the Watermark property.  This dependency property indicates the watermark for the control.
@@ -56,34 +42,19 @@ namespace WPF.Controls
         /// <param name="e">A <see cref="DependencyPropertyChangedEventArgs"/> that contains the event data.</param>
         private static void OnWatermarkChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Control control = (Control)d;
+            Control control = (Control) d;
             control.Loaded += Control_Loaded;
 
-            if (d is ComboBox)
+            if (d is TextBox)
             {
                 control.GotKeyboardFocus += Control_GotKeyboardFocus;
                 control.LostKeyboardFocus += Control_Loaded;
-            }
-            else if (d is TextBox)
-            {
-                control.GotKeyboardFocus += Control_GotKeyboardFocus;
-                control.LostKeyboardFocus += Control_Loaded;
-                ((TextBox)control).TextChanged += Control_GotKeyboardFocus;
-            }
-
-            if (d is ItemsControl && !(d is ComboBox))
-            {
-                ItemsControl i = (ItemsControl)d;
-
-                // for Items property  
-                i.ItemContainerGenerator.ItemsChanged += ItemsChanged;
-                ItemsControls.Add(i.ItemContainerGenerator, i);
-
-                // for ItemsSource property  
-                DependencyPropertyDescriptor prop = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, i.GetType());
-                prop.AddValueChanged(i, ItemsSourceChanged);
+                ((TextBox) control).TextChanged += Control_GotKeyboardFocus;
             }
         }
+
+        #endregion
+        
 
         #region Event Handlers
 
@@ -144,27 +115,6 @@ namespace WPF.Controls
             }
         }
 
-        /// <summary>
-        /// Event handler for the items changed event
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="ItemsChangedEventArgs"/> that contains the event data.</param>
-        private static void ItemsChanged(object sender, ItemsChangedEventArgs e)
-        {
-            ItemsControl control;
-            if (ItemsControls.TryGetValue(sender, out control))
-            {
-                if (ShouldShowWatermark(control))
-                {
-                    ShowWatermark(control);
-                }
-                else
-                {
-                    RemoveWatermark(control);
-                }
-            }
-        }
-
         #endregion
 
         #region Helper Methods
@@ -206,10 +156,7 @@ namespace WPF.Controls
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
 
             // layer could be null if control is no longer in the visual tree
-            if (layer != null)
-            {
-                layer.Add(new WatermarkAdorner(control, GetWatermark(control)));
-            }
+            layer?.Add(new WatermarkAdorner(control, GetWatermark(control)));
         }
 
         /// <summary>
@@ -219,17 +166,9 @@ namespace WPF.Controls
         /// <returns>true if the watermark should be shown; false otherwise</returns>
         private static bool ShouldShowWatermark(Control c)
         {
-            if (c is ComboBox)
+            if (c is TextBoxBase)
             {
-                return (c as ComboBox).Text == string.Empty;
-            }
-            else if (c is TextBoxBase)
-            {
-                return (c as TextBox).Text == string.Empty;
-            }
-            else if (c is ItemsControl)
-            {
-                return (c as ItemsControl).Items.Count == 0;
+                return (c as TextBox)?.Text == string.Empty;
             }
             else
             {

@@ -13,8 +13,6 @@ namespace DesktopClient
     public static class Service
     {
         private static readonly HttpClient HttpClient = new HttpClient();
-        //private static Configuration _config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        //private static readonly string ApiKey = ConfigurationManager.AppSettings["WebApiKey"];
 
         public static async Task<User> Login(string username, SecureString securePassword)
         {
@@ -52,7 +50,6 @@ namespace DesktopClient
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpException();
-                //return await JsonUtility.ParseJson<User>(response);
             }
         }
 
