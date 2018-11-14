@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Common;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
@@ -12,29 +8,73 @@ namespace WebAPI.Handlers
     public class ItemHandler : IDisposable, IItemHandler
     {
 
-        private readonly MySqlConnection _conn;
+        private MySqlConnection _conn;
 
-        public ItemHandler()
+        public ItemHandler(MySqlConnection conn = null)
         {
-            var conString = AppSettings.ConnectionString;
-            _conn = new MySqlConnection(conString);
-
+            _conn = conn ?? new MySqlConnection(AppSettings.ConnectionString);
+            _conn.Open();
         }
 
         public void CreateItem(Item item)
         {
-            
+            var sql = "INSERT INTO Items (Name, Price) VALUES(@Name, @Price);";
+
+            var cmd = new MySqlCommand(sql, _conn); ;
+
+            cmd.Parameters.AddWithValue("@Name", item.Name);
+            cmd.Parameters.AddWithValue("@Price", item.Price);
+
+            cmd.ExecuteNonQuery();
+
+            var id = cmd.LastInsertedId;
+
+            sql = "INSERT INTO ItemStorage (ItemId, Amount) VALUES (@ItemId, @Amount);";
+            cmd = new MySqlCommand(sql, _conn);
+
+
+            cmd.Parameters.AddWithValue("@ItemId", id);
+            cmd.Parameters.AddWithValue("@Amount", item.Amount);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public void updateAmount(long id, int amount)
+        {
+            var sql = "UPDATE ItemStorage SET  Amount= @Amount where Id = @Id;";
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@Amount", amount);
+
+            cmd.ExecuteNonQuery();
+
         }
 
         public void DeleteItem(long id)
         {
-            throw new NotImplementedException();
+            var sql = "Delete From ItemStorage Where Id = @Id;";
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+
+            sql = "DELETE FROM Items WHERE Id = @Id;";
+            cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public void Dispose()
+        {
+            _conn.Close();
         }
 
         public List<Item> GetAllItems()
         {
-            _conn.Open();
-            const string sql = "SELECT * FROM Items;";
+            const string sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId;;";
             var cmd = new MySqlCommand(sql, _conn);
 
             var itemList = new List<Item>();
@@ -45,47 +85,53 @@ namespace WebAPI.Handlers
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
-                    Amount = Convert.ToInt32(dataReader["Amount"].ToString()),
+                    Amount = (Convert.ToInt32(dataReader["Storage"].ToString())),
                     Price = Convert.ToDouble(dataReader["Price"].ToString())
                 };
                 itemList.Add(item);
             }
-            _conn.Close();
             return itemList;
         }
 
         public Item GetItem(long id)
         {
-            _conn.Open();
-            var sql = "SELECT * FROM Items where Id = @Id;"; // + id + ";";
+            var sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId; where Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
 
             Item item = null;
             var dataReader = cmd.ExecuteReader();
+
+            
+
             while (dataReader.Read())
             {
                 item = new Item
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
-                    Amount = Convert.ToInt32(dataReader["Amount"].ToString()),
+                    Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
                     Price = Convert.ToDouble(dataReader["Price"].ToString())
                 };
             }
-            _conn.Close();
+
             return item;
         }
 
         public void UpdateItem(long id, Item item)
         {
-            throw new NotImplementedException();
-        }
+            var sql = "UPDATE Items SET  Name= @Name, Price = @Price where Id = @Id;";
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Name", item.Name);
+            cmd.Parameters.AddWithValue("@Price", item.Price);
+
+            cmd.ExecuteNonQuery();
         }
+    
+    
     }
 }

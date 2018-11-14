@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
+using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
 {
@@ -10,5 +11,6 @@ namespace WebAPI.Handlers
         void CreateItem(Item item);
         void UpdateItem(long id, Item item);
         void DeleteItem(long id);
+        void updateAmount(long id, int amount);
     }
 }

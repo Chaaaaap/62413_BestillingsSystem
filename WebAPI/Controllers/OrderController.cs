@@ -125,23 +125,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public IActionResult UpdateOrder([FromForm] Order order, int id)
-        {
-            try
-            {
-                _handler.UpdateOrder(id, order);
-
-                return Ok();
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e);
-                return NotFound();
-            }
-        }
+    
 
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]

@@ -6,12 +6,10 @@ namespace WebAPI.Handlers
 {
     interface IOrderHandler
     {
-        Order GetOrder(long i);
+        Order GetOrder(long id);
         List<Order> GetAllOrders();
         List<Order> GetAllUserOrders(long id);
-        List<Item> GetAllItems(long id);
         void CreateOrder(Order order);
-        void UpdateOrder(long id, Order order);
         void DeleteOrder(long id);
     }
 }

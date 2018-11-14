@@ -8,7 +8,7 @@ namespace WebAPI.Handlers
         User GetUser(long i);
         User GetUserForLogin(string username);
         List<User> GetAllUsers();
-        void CreateUser(Login user);
+        void CreateUser(User user);
         void UpdateUser(long id, User user);
         void DeleteUser(long id);
     }

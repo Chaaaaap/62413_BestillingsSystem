@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
-        public IActionResult CreateUser([FromForm] Login user)
+        public IActionResult CreateUser([FromForm] User user)
         {
             try
             {

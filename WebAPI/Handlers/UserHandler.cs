@@ -13,10 +13,10 @@ namespace WebAPI.Handlers
         private readonly MySqlConnection _conn;
 
         // We need a SQL Connection
-        public UserHandler()
+        public UserHandler(MySqlConnection conn = null)
         {
-            var conString = AppSettings.ConnectionString;
-            _conn = new MySqlConnection(conString);
+            _conn = conn ?? new MySqlConnection(AppSettings.ConnectionString);
+            _conn.Open();
 
         }
 
@@ -28,8 +28,6 @@ namespace WebAPI.Handlers
         public User GetUserForLogin(string username)
         {
 
-            _conn.Open();
-            
             var sql = "SELECT * FROM Users where Username=@Username";
             var cmd = new MySqlCommand(sql, _conn);
 
@@ -49,7 +47,7 @@ namespace WebAPI.Handlers
                        Password = dataReader["Password"].ToString()
                     };
             }
-            _conn.Close();
+            dataReader.Close();
             return user;
         }
 
@@ -60,7 +58,6 @@ namespace WebAPI.Handlers
         /// <returns></returns>
         public User GetUser(long id)
         {
-            _conn.Open();
             var sql = "SELECT * FROM Users where Id = @Id;"; // + id + ";";
             var cmd = new MySqlCommand(sql, _conn);
 
@@ -74,10 +71,11 @@ namespace WebAPI.Handlers
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Username = dataReader["Username"].ToString(),
-                    Password = dataReader["Password"].ToString()
+                    Password = dataReader["Password"].ToString(),
+                    LatestLogin =Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
+                    Email = dataReader["Email"].ToString()
                 };
             }
-            _conn.Close();
             return user;
         }
 
@@ -87,7 +85,6 @@ namespace WebAPI.Handlers
         /// <returns></returns>
         public List<User> GetAllUsers()
         {
-            _conn.Open();
             const string sql = "SELECT * FROM Users;";
             var cmd = new MySqlCommand(sql, _conn);
 
@@ -103,16 +100,14 @@ namespace WebAPI.Handlers
                 };
                 userList.Add(user);
             }
-            _conn.Close();
             return userList;
         }
 
         /// <summary>
         /// Creates a new user
         /// </summary>
-        public void CreateUser(Login user)
+        public void CreateUser(User user)
         {
-            _conn.Open();
             var sql = "INSERT INTO Users (Username, Password, salt, Email) VALUES(@Username, @Password, @Salt, @Email);";
 
             var cmd = new MySqlCommand(sql, _conn); ;
@@ -123,8 +118,6 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Email", user.Email);
 
             cmd.ExecuteNonQuery();
-
-            _conn.Close();
         }
 
         /// <summary>
@@ -135,19 +128,17 @@ namespace WebAPI.Handlers
         /// <param name="user"></param>
         public void UpdateUser(long id, User user)
         {
-            _conn.Open();
-            var sql = "UPDATE Users SET Username = @Username, Password = @Password where Id = @Id;"; // + id + ";";
+            var sql = "UPDATE Users SET Username = @Username, Password = @Password, Email = @Email, LatestLogin = @LatestLogin where Id = @Id;"; // + id + ";";
 
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
-
+            cmd.Parameters.AddWithValue("@LatestLogin", user.LatestLogin);
+            cmd.Parameters.AddWithValue("@Email", user.Email);
 
             cmd.ExecuteNonQuery();
-
-            _conn.Close();
         }
         
         /// <summary>
@@ -156,7 +147,6 @@ namespace WebAPI.Handlers
         /// <param name="id"></param>
         public void DeleteUser(long id)
         {
-            _conn.Open();
             var sql = "DELETE FROM Users WHERE Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
@@ -164,7 +154,6 @@ namespace WebAPI.Handlers
 
             cmd.ExecuteNonQuery();
 
-            _conn.Close();
         }
 
         public void Dispose()

@@ -11,6 +11,7 @@ namespace Common
         public string Token { get; set; }
         public string Email { get; set; }
         public byte[] Salt { get; set; }
+        public Boolean IsAdmin { get; set; }
         public User() { }
 
         public User(long id, string username, string password, DateTime? latestLogin = null)
