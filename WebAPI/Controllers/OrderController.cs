@@ -85,27 +85,6 @@ namespace WebAPI.Controllers
             return NotFound();
         }
 
-        [HttpGet("item/{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public ActionResult<List<Order>> GetAllItems(int id)
-        {
-            try
-            {
-                var allItemsFromDb = _handler.GetAllItems(id);
-
-                if (allItemsFromDb != null)
-                {
-                    return Ok(allItemsFromDb);
-                }
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e);
-            }
-            return NotFound();
-        }
-
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
