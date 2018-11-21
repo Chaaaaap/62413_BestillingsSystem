@@ -14,6 +14,7 @@ namespace DesktopClient
     {
         private static readonly HttpClient HttpClient = new HttpClient();
 
+        #region Users
         public static async Task<User> Login(string username, SecureString securePassword)
         {
             var passwordHash = StringUtility.HashString(StringUtility.SecureStringToStringConverter(securePassword));
@@ -53,6 +54,17 @@ namespace DesktopClient
             }
         }
 
+        public static async Task<List<User>> GetAllUsers()
+        {
+            var response = await HttpClient.GetAsync(ApplicationInfo.WebApiKey + "/user");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonUtility.ParseJson<List<User>>(response);
+            }
+            return null;
+        }
+
         public static async Task<User> UpdateUser(User user)
         {
             var values = new Dictionary<string, string>
@@ -72,5 +84,20 @@ namespace DesktopClient
             }
             return user;
         }
+        #endregion
+
+        #region Items
+
+        public static async Task<List<Item>> GetAllItems()
+        {
+            var response = await HttpClient.GetAsync(ApplicationInfo.WebApiKey + "/item");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonUtility.ParseJson<List<Item>>(response);
+            }
+            return null;
+        }
+        #endregion
     }
 }
