@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DesktopClient.ViewModels;
 
 namespace DesktopClient.Views
 {
@@ -22,6 +23,7 @@ namespace DesktopClient.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel(null);
         }
     }
 }

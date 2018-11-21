@@ -11,7 +11,7 @@ using WebAPI.Handlers;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]

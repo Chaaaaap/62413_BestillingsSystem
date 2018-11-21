@@ -19,7 +19,9 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding Items}">
 
+        </ListView>
         </Grid>
     </StackPanel>
 </Window>

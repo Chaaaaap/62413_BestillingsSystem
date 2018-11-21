@@ -8,7 +8,7 @@ namespace DesktopClient.ViewModels
 {
     class RibbonViewModel : BaseViewModel
     {
-        private bool _isAdministrator = ApplicationInfo.CurrentUser.IsAdmin;
+        //private bool _isAdministrator = ApplicationInfo.CurrentUser.IsAdmin;
         public RibbonViewModel(BaseViewModel parent) : base(parent)
         {
         }
