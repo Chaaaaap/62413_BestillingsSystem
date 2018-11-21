@@ -31,7 +31,10 @@
         <Setter Property="Margin" Value="0 10 0 5"/>
         <Setter Property="IsTabStop" Value="True" />
     </Style>
-    
-
+    <Style TargetType="{x:Type Control}" x:Key="AdminTextBox">
+        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Padding" Value="0,3,0,0"/>
+    </Style>
 
 </ResourceDictionary>
