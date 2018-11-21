@@ -53,5 +53,24 @@ namespace DesktopClient
             }
         }
 
+        public static async Task<User> UpdateUser(User user)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "username", user.Username },
+                { "password", user.Password },
+                { "email", user.Email },
+                { "isadmin", user.IsAdmin.ToString() }
+            };
+            HttpContent content = new FormUrlEncodedContent(values);
+
+            var response = await HttpClient.PutAsync(ApplicationInfo.WebApiKey + "/user/" + user.Id, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+            return user;
+        }
     }
 }

@@ -44,7 +44,8 @@ namespace WebAPI.Handlers
                     {
                        Id = Convert.ToInt64(dataReader["Id"].ToString()),
                        Username = dataReader["Username"].ToString(),
-                       Password = dataReader["Password"].ToString()
+                       Password = dataReader["Password"].ToString(),
+                       IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                     };
             }
             dataReader.Close();
@@ -72,8 +73,9 @@ namespace WebAPI.Handlers
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Username = dataReader["Username"].ToString(),
                     Password = dataReader["Password"].ToString(),
-                    LatestLogin =Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
-                    Email = dataReader["Email"].ToString()
+                    LatestLogin = Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
+                    Email = dataReader["Email"].ToString(),
+                    IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                 };
             }
             return user;
@@ -96,7 +98,10 @@ namespace WebAPI.Handlers
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Username = dataReader["Username"].ToString(),
-                    Password = dataReader["Password"].ToString()
+                    Password = dataReader["Password"].ToString(),
+                    LatestLogin = Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
+                    Email = dataReader["Email"].ToString(),
+                    IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                 };
                 userList.Add(user);
             }
@@ -108,7 +113,7 @@ namespace WebAPI.Handlers
         /// </summary>
         public void CreateUser(User user)
         {
-            var sql = "INSERT INTO Users (Username, Password, salt, Email) VALUES(@Username, @Password, @Salt, @Email);";
+            var sql = "INSERT INTO Users (Username, Password, salt, Email, isAdmin) VALUES(@Username, @Password, @Salt, @Email, @isAdmin);";
 
             var cmd = new MySqlCommand(sql, _conn); ;
 
@@ -116,6 +121,7 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Password", user.Password);
             cmd.Parameters.AddWithValue("@Salt", user.Salt);
             cmd.Parameters.AddWithValue("@Email", user.Email);
+            cmd.Parameters.AddWithValue("@isAdmin", user.IsAdmin);
 
             cmd.ExecuteNonQuery();
         }
@@ -128,7 +134,7 @@ namespace WebAPI.Handlers
         /// <param name="user"></param>
         public void UpdateUser(long id, User user)
         {
-            var sql = "UPDATE Users SET Username = @Username, Password = @Password, Email = @Email, LatestLogin = @LatestLogin where Id = @Id;"; // + id + ";";
+            var sql = "UPDATE Users SET Username = @Username, Password = @Password, Email = @Email, LatestLogin = @LatestLogin, isAdmin = @idAdmin where Id = @Id;"; // + id + ";";
 
             var cmd = new MySqlCommand(sql, _conn);
 
@@ -137,6 +143,7 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Password", user.Password);
             cmd.Parameters.AddWithValue("@LatestLogin", user.LatestLogin);
             cmd.Parameters.AddWithValue("@Email", user.Email);
+            cmd.Parameters.AddWithValue("@isAdmin", user.IsAdmin);
 
             cmd.ExecuteNonQuery();
         }
