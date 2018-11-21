@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
             return NotFound();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
