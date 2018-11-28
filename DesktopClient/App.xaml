@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:con="clr-namespace:WPF.Converters;assembly=WPF"
              xmlns:local="clr-namespace:DesktopClient"
-             StartupUri="Views/AdministratorView.xaml">
+             xmlns:helpers="clr-namespace:WPF.Helpers;assembly=WPF"
+             xmlns:microsoftWindowsThemes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+             StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
+        
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/WPF;component/Styles/Styles.xaml" />
                 <!--<ResourceDictionary Source="/WPF;component/Converters/BoolToVisibilityConverter" />-->
@@ -13,6 +17,20 @@
             <con:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <con:MultiStringConverterBinding x:Key="MultiStringConverterBinding"/>
             <con:MultiBoolConverterBinding x:Key="MultiBoolConverterBinding"/>
+            <!--<ControlTemplate x:Key="WatermarkedPasswordBoxTemplate" TargetType="{x:Type PasswordBox}">
+                <microsoftWindowsThemes:ListBoxChrome x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                    <Grid>
+                        <TextBlock Text="{Binding Path=(helpers:PasswordBoxHelper.Watermark), RelativeSource={RelativeSource TemplatedParent}}" Opacity=".5" FontWeight="Bold" Visibility="{Binding (helpers:PasswordBoxHelper.ShowWatermark), Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Grid>
+                </microsoftWindowsThemes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+            </ControlTemplate>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

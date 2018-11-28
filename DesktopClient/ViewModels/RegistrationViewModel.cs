@@ -33,19 +33,6 @@ namespace DesktopClient.ViewModels
             }
         }
 
-        //private string _password;
-        //public string Password
-        //{
-        //    get => _password;
-        //    set
-        //    {
-        //        if (value == _password)
-        //            return;
-        //        _password = value;
-        //        OnPropertyChanged(nameof(Password));
-        //    }
-        //}
-
         private string _email;
         public string Email
         {
@@ -89,14 +76,11 @@ namespace DesktopClient.ViewModels
 
             var securePassword = passwordBox.Password;
 
-            var salt = new byte[16];
-
             var user = new User
             {
                 Username = Username,
-                Password = StringUtility.HashString(StringUtility.SecureStringToStringConverter(securePassword), out salt),
+                Password = StringUtility.SecureStringToStringConverter(securePassword),
                 Email = Email,
-                Salt = salt
             };
 
             Service.RegisterUser(user);

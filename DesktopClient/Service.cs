@@ -17,17 +17,18 @@ namespace DesktopClient
         #region Users
         public static async Task<User> Login(string username, SecureString securePassword)
         {
-            var passwordHash = StringUtility.HashString(StringUtility.SecureStringToStringConverter(securePassword));
+            //var passwordHash = StringUtility.HashString(StringUtility.SecureStringToStringConverter(securePassword));
 
-            
+            var password = StringUtility.SecureStringToStringConverter(securePassword);
 
             var values = new Dictionary<string, string>
             {
-                { "secureUsername", username },
-                { "securePassword", passwordHash }
+                { "Username", username },
+                { "Password", password }
             };
 
             HttpContent content = new FormUrlEncodedContent(values);
+
             var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/login", content);
 
             if (response.IsSuccessStatusCode)

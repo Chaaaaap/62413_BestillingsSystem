@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cc="clr-namespace:WPF.Controls;assembly=WPF"
+        xmlns:ch="clr-namespace:WPF.Helpers;assembly=WPF"
         mc:Ignorable="d"
         Height="250" Width="300"
         Name="LoginView">
@@ -30,9 +31,10 @@
                  Style="{StaticResource LoginPage}"
                  />
         <Label Grid.Row="2" Grid.Column="1" Content="Password" Style="{StaticResource LoginPageLabel}"/>
-        <PasswordBox  Grid.Row="3" Grid.Column="1" 
-                      Name="PasswordBox"
-                      Style="{StaticResource LoginPage}"/>
+        <PasswordBox Grid.Row="3" Grid.Column="1" 
+                    Name="PasswordBox"
+                    Style="{StaticResource LoginPage}"
+                    />
 
         <Button Grid.Row="4" Grid.Column="1" 
                 Command="{Binding LoginCommand}"
