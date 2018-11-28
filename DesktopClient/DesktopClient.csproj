@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\AdminUserViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
     <Compile Include="Views\AdminCreateUserView.xaml.cs">
