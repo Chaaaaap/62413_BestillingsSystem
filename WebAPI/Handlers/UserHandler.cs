@@ -134,7 +134,7 @@ namespace WebAPI.Handlers
         /// <param name="user"></param>
         public void UpdateUser(long id, User user)
         {
-            var sql = "UPDATE Users SET Username = @Username, Password = @Password, Email = @Email, LatestLogin = @LatestLogin, isAdmin = @idAdmin where Id = @Id;"; // + id + ";";
+            var sql = "UPDATE Users SET Username = @Username, Password = @Password, Email = @Email, LatestLogin = @LatestLogin, isAdmin = @isAdmin where Id = @Id;"; // + id + ";";
 
             var cmd = new MySqlCommand(sql, _conn);
 
