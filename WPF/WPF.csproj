@@ -50,6 +50,7 @@
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\MultiBoolConverterBinding.cs" />
+    <Compile Include="Converters\MultiBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\MultiStringConverterBinding.cs" />
     <Compile Include="Helpers\WatermarkAdorner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
