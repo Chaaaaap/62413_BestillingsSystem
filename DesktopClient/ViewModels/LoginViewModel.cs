@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security;
+using System.Windows;
 using System.Windows.Input;
 using Common.Utils;
 using DesktopClient.Helpers;
@@ -77,14 +78,8 @@ namespace DesktopClient.ViewModels
             return !string.IsNullOrWhiteSpace(Username);
         }
 
-        public void Login(object sender)
+        public async void Login(object sender)
         {
-            if (!Validations.ValidateStringLength(Username, 8))
-            {
-                HasError = true;
-                return;
-            }
-
             var passwordBox = sender as IHavePassword;
             if (passwordBox == null)
             {
@@ -93,13 +88,17 @@ namespace DesktopClient.ViewModels
 
             var securePassword = passwordBox.Password;
 
-            var currentUser = Service.Login(Username, securePassword).Result;
+            var currentUser = await Service.Login(Username, securePassword);
 
             if (currentUser != null)
             {
                 ApplicationInfo.CurrentUser = currentUser;
                 if (sender is LoginWindow window)
+                {
+                    Window mainWindow = new MainWindow();
+                    mainWindow.Show();
                     window.Close();
+                }
             }
             else
                 HasError = true;

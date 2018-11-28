@@ -19,8 +19,21 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding Items}">
-
+        <ListView ItemsSource="{Binding Items}" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" BorderThickness="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                        <StackPanel>
+                            <!--There should be an image of the item here-->
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Amount}"/>
+                        </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
         </ListView>
         </Grid>
     </StackPanel>

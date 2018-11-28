@@ -42,10 +42,10 @@ namespace WebAPI.Handlers
             {
                 user = new User
                     {
-                       Id = Convert.ToInt64(dataReader["Id"].ToString()),
-                       Username = dataReader["Username"].ToString(),
-                       Password = dataReader["Password"].ToString(),
-                       IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
+                        Id = Convert.ToInt64(dataReader["Id"].ToString()),
+                        Username = dataReader["Username"].ToString(),
+                        Password = dataReader["Password"].ToString(),
+                        IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                     };
             }
             dataReader.Close();
