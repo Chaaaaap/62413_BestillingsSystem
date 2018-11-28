@@ -13,13 +13,16 @@ namespace WPF.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[1] != null)
-                return values[1];
-            return values[0];
+                return values[1].ToString();
+            if(values[0].ToString() == "{DependencyProperty.UnsetValue}")
+                return "";
+            return values[0].ToString();
+
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return new object[] { value, value };
+            return new object[] { value, value};
         }
     }
 }

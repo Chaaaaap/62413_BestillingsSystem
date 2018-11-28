@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DesktopClient.ViewModels
@@ -24,6 +25,8 @@ namespace DesktopClient.ViewModels
             get => _selectedUser;
             set
             {
+                EditUser = true;
+                CreateUser = false;
                 if (_selectedUser == value)
                     return;
                 _selectedUser = value;
@@ -86,35 +89,47 @@ namespace DesktopClient.ViewModels
             }
         }
 
-        //private bool _createUser;
+        private bool _createUser = false;
 
-        //public bool CreateUser
-        //{
-        //    get => _createUser;
-        //    set
-        //    {
-        //        if (_createUser == value)
-        //            return;
-        //        _createUser = value;
-        //        OnPropertyChanged(nameof(CreateUser));
-        //    }
-        //}
+        public bool CreateUser
+        {
+            get => _createUser;
+            set
+            {
+                if (_createUser == value)
+                    return;
+                _createUser = value;
+                OnPropertyChanged(nameof(CreateUser));
+            }
+        }
 
-        //private bool _editUser;
+        private bool _editUser = false;
 
-        //public bool EditUser
-        //{
-        //    get => _editUser;
-        //    set
-        //    {
-        //        if (_editUser == value)
-        //            return;
-        //        _editUser = value;
-        //        OnPropertyChanged(nameof(EditUser));
-        //    }
-        //}
+        public bool EditUser
+        {
+            get => _editUser;
+            set
+            {
+                if (_editUser == value)
+                    return;
+                _editUser = value;
+                OnPropertyChanged(nameof(EditUser));
+            }
+        }
 
         public ICommand SaveUserCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand CreateUserCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand AdminCreateUserCommand
         {
             get;
             private set;
@@ -136,6 +151,23 @@ namespace DesktopClient.ViewModels
         private void InitializeCommands()
         {
             SaveUserCommand = new CommandHandler(SaveUserChanges);
+            CreateUserCommand = new CommandHandler(AdminCreateUser);
+            AdminCreateUserCommand = new CommandHandler(CreateUserClicked);
+        }
+
+        public void AdminCreateUser(object sender)
+        {
+            //Her skal laves tjek for validation: 
+            User user = new User
+            {
+                Username = TmpUsername,
+                Email = TmpEmail,
+                IsAdmin = TmpIsAdmin ?? false,
+                Password = TmpPassword
+            };
+
+            Service.AdminCreateUser(user);
+            PopulateUsers();
         }
 
         public void SaveUserChanges(object sender)
@@ -168,9 +200,22 @@ namespace DesktopClient.ViewModels
             TmpPassword = null;
         }
 
+        private void CreateUserClicked(object sender)
+        {
+            TmpUsername = null;
+            TmpEmail = null;
+            TmpIsAdmin = null;
+            TmpPassword = null;
+            SelectedUser = null;
+            CreateUser = true;
+            EditUser = false;
+
+        }
+
         private async void PopulateUsers()
         {
             List<User> userList = await Service.GetAllUsers();
+            Users.Clear();
 
             foreach (User user in userList)
             {

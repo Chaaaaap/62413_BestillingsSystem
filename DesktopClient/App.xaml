@@ -8,11 +8,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/WPF;component/Styles/Styles.xaml" />
-                <!--<ResourceDictionary Source="/WPF;component/Converters/BoolToVisibilityConverter" />-->
             </ResourceDictionary.MergedDictionaries>
             <con:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <con:MultiStringConverterBinding x:Key="MultiStringConverterBinding"/>
             <con:MultiBoolConverterBinding x:Key="MultiBoolConverterBinding"/>
+            <con:MultiBoolToVisibilityConverter x:Key="MultiBoolToVisibilityConverter"/>
+            <con:StringToIntConveter x:Key="StringToIntConverter"/>
+            <con:StringToDoubleConverter x:Key="StringToDoubleConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

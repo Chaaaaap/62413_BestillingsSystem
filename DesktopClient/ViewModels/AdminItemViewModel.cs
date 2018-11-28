@@ -24,6 +24,8 @@ namespace DesktopClient.ViewModels
             get => _selectedItem;
             set
             {
+                CreateItem = false;
+                EditItem = true;
                 if (_selectedItem == value)
                     return;
                 _selectedItem = value;
@@ -73,6 +75,34 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        private bool _createItem = false;
+
+        public bool CreateItem
+        {
+            get => _createItem;
+            set
+            {
+                if (_createItem == value)
+                    return;
+                _createItem = value;
+                OnPropertyChanged(nameof(CreateItem));
+            }
+        }
+
+        private bool _editItem = false;
+
+        public bool EditItem
+        {
+            get => _editItem;
+            set
+            {
+                if (_editItem == value)
+                    return;
+                _editItem = value;
+                OnPropertyChanged(nameof(EditItem));
+            }
+        }
+
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
 
         public ObservableCollection<Item> Items
@@ -90,7 +120,7 @@ namespace DesktopClient.ViewModels
         private async void PopulateItems()
         {
             List<Item> itemList = await Service.GetAllItems();
-
+            Items.Clear();
             foreach (Item item in itemList)
             {
                 Items.Add(item);
@@ -102,10 +132,22 @@ namespace DesktopClient.ViewModels
             get;
             private set;
         }
+        public ICommand CreateItemCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand AdminCreateItemCommand
+        {
+            get;
+            private set;
+        }
 
         private void InitializeCommands()
         {
             SaveItemCommand = new CommandHandler(SaveItemChanges);
+            CreateItemCommand = new CommandHandler(AdminCreateItem);
+            AdminCreateItemCommand = new CommandHandler(CreateItemClicked);
         }
 
         public void SaveItemChanges(object sender)
@@ -133,6 +175,31 @@ namespace DesktopClient.ViewModels
             TmpName = null;
             TmpPrice = null;
             TmpAmount = null;
+        }
+
+        public void AdminCreateItem(object sender)
+        {
+            
+            Item item = new Item
+            {
+                Name = TmpName,
+                Price = TmpPrice ?? 0.0,
+                Amount = TmpAmount ?? 0
+            };
+
+            Service.CreateItem(item);
+            PopulateItems();
+        }
+
+        private void CreateItemClicked(object sender)
+        {
+            TmpName = null;
+            TmpAmount = null;
+            TmpPrice = null;
+            SelectedItem = null;
+            CreateItem = true;
+            EditItem = false;
+
         }
     }
 }

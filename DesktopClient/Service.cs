@@ -135,6 +135,23 @@ namespace DesktopClient
             }
             return item;
         }
+
+        public static async void CreateItem(Item item)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "name", item.Name },
+                { "Amount", item.Amount.ToString()},
+                { "Price", item.Price.ToString()},
+            };
+            HttpContent content = new FormUrlEncodedContent(values);
+            var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/item", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+        }
         #endregion
     }
 }

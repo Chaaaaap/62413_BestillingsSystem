@@ -29,7 +29,7 @@ namespace WebAPI.Handlers
 
             var id = cmd.LastInsertedId;
 
-            sql = "INSERT INTO ItemStorage (ItemId, Amount) VALUES (@ItemId, @Amount);";
+            sql = "INSERT INTO ItemStorage (ItemId, Storage) VALUES (@ItemId, @Amount);";
             cmd = new MySqlCommand(sql, _conn);
 
 
@@ -74,7 +74,7 @@ namespace WebAPI.Handlers
 
         public List<Item> GetAllItems()
         {
-            const string sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId;;";
+            const string sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId;";
             var cmd = new MySqlCommand(sql, _conn);
 
             var itemList = new List<Item>();
@@ -85,7 +85,7 @@ namespace WebAPI.Handlers
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
-                    Amount = (Convert.ToInt32(dataReader["Storage"].ToString())),
+                    Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
                     Price = Convert.ToDouble(dataReader["Price"].ToString())
                 };
                 itemList.Add(item);

@@ -49,6 +49,8 @@
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToDoubleConverter.cs" />
+    <Compile Include="Converters\StringToIntConveter.cs" />
     <Compile Include="Converters\MultiBoolConverterBinding.cs" />
     <Compile Include="Converters\MultiBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\MultiStringConverterBinding.cs" />

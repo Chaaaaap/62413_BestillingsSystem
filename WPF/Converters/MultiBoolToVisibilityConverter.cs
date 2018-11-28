@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace WPF.Converters
 {
-    class MultiBoolToVisibilityConverter : IMultiValueConverter
+    public class MultiBoolToVisibilityConverter : IMultiValueConverter
     {
         private object GetVisibility(object value)
         {
