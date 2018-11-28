@@ -54,7 +54,7 @@ namespace DesktopClient
             }
         }
 
-        public static async void AdminCreateUser(User user)
+        public static async Task<User> AdminCreateUser(User user)
         {
             var values = new Dictionary<string, string>
             {
@@ -70,6 +70,7 @@ namespace DesktopClient
             {
                 throw new HttpException();
             }
+            return user;
         }
 
         public static async Task<List<User>> GetAllUsers()
@@ -136,7 +137,7 @@ namespace DesktopClient
             return item;
         }
 
-        public static async void CreateItem(Item item)
+        public static async Task<Item> CreateItem(Item item)
         {
             var values = new Dictionary<string, string>
             {
@@ -151,6 +152,8 @@ namespace DesktopClient
             {
                 throw new HttpException();
             }
+
+            return item;
         }
         #endregion
     }

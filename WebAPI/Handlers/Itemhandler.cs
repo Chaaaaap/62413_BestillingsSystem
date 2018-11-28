@@ -41,10 +41,11 @@ namespace WebAPI.Handlers
 
         public void updateAmount(long id, int amount)
         {
-            var sql = "UPDATE ItemStorage SET  Amount= @Amount where Id = @Id;";
+            var sql = "UPDATE ItemStorage SET  Storage = @Amount where ItemId = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Amount", amount);
+            cmd.Parameters.AddWithValue("@Id", id);
 
             cmd.ExecuteNonQuery();
 
@@ -130,6 +131,8 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Price", item.Price);
 
             cmd.ExecuteNonQuery();
+
+            updateAmount(id, item.Amount);
         }
     
     

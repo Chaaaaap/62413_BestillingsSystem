@@ -155,7 +155,7 @@ namespace DesktopClient.ViewModels
             AdminCreateUserCommand = new CommandHandler(CreateUserClicked);
         }
 
-        public void AdminCreateUser(object sender)
+        public async void AdminCreateUser(object sender)
         {
             //Her skal laves tjek for validation: 
             User user = new User
@@ -166,11 +166,15 @@ namespace DesktopClient.ViewModels
                 Password = TmpPassword
             };
 
-            Service.AdminCreateUser(user);
+            await Service.AdminCreateUser(user);
+            TmpUsername = null;
+            TmpEmail = null;
+            TmpIsAdmin = null;
+            TmpPassword = null;
             PopulateUsers();
         }
 
-        public void SaveUserChanges(object sender)
+        public async void SaveUserChanges(object sender)
         {
             User user = new User
             {
@@ -182,15 +186,9 @@ namespace DesktopClient.ViewModels
                 Id = SelectedUser.Id
             };
 
-            var updatedUser = Service.UpdateUser(user).Result;
+            var updatedUser = await Service.UpdateUser(user);
+            PopulateUsers();
 
-            var tmpUser = Users.Where(u => u.Id == updatedUser.Id).FirstOrDefault();
-            if (tmpUser != null)
-            {
-                Users.Remove(tmpUser);
-            }
-
-            Users.Add(updatedUser);
             OnPropertyChanged(nameof(Users));
             OnPropertyChanged(nameof(SelectedUser));
 

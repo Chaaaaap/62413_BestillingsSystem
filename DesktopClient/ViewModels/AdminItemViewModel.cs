@@ -150,7 +150,7 @@ namespace DesktopClient.ViewModels
             AdminCreateItemCommand = new CommandHandler(CreateItemClicked);
         }
 
-        public void SaveItemChanges(object sender)
+        public async void SaveItemChanges(object sender)
         {
             Item item = new Item
             {
@@ -160,15 +160,9 @@ namespace DesktopClient.ViewModels
                 Id = SelectedItem.Id
             };
 
-            var updatedItem = Service.UpdateItem(item).Result;
+            var updatedItem = await Service.UpdateItem(item);
+            PopulateItems();
 
-            var tmpItem = Items.Where(u => u.Id == updatedItem.Id).FirstOrDefault();
-            if (tmpItem != null)
-            {
-                Items.Remove(tmpItem);
-            }
-
-            Items.Add(updatedItem);
             OnPropertyChanged(nameof(Items));
             OnPropertyChanged(nameof(SelectedItem));
 
@@ -177,7 +171,7 @@ namespace DesktopClient.ViewModels
             TmpAmount = null;
         }
 
-        public void AdminCreateItem(object sender)
+        public async void AdminCreateItem(object sender)
         {
             
             Item item = new Item
@@ -187,7 +181,10 @@ namespace DesktopClient.ViewModels
                 Amount = TmpAmount ?? 0
             };
 
-            Service.CreateItem(item);
+            await Service.CreateItem(item);
+            TmpName = null;
+            TmpAmount = null;
+            TmpPrice = null;
             PopulateItems();
         }
 
