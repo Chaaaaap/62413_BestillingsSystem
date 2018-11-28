@@ -54,6 +54,24 @@ namespace DesktopClient
             }
         }
 
+        public static async void AdminCreateUser(User user)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "username", user.Username },
+                { "password", user.Password },
+                { "email", user.Email },
+                { "isadmin", user.IsAdmin.ToString()}
+            };
+            HttpContent content = new FormUrlEncodedContent(values);
+            var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/user", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+        }
+
         public static async Task<List<User>> GetAllUsers()
         {
             var response = await HttpClient.GetAsync(ApplicationInfo.WebApiKey + "/user");
@@ -72,7 +90,7 @@ namespace DesktopClient
                 { "username", user.Username },
                 { "password", user.Password },
                 { "email", user.Email },
-                { "isadmin", user.IsAdmin.ToString() }
+                { "isadmin", user.IsAdmin.ToString()}
             };
             HttpContent content = new FormUrlEncodedContent(values);
 
@@ -97,6 +115,25 @@ namespace DesktopClient
                 return await JsonUtility.ParseJson<List<Item>>(response);
             }
             return null;
+        }
+
+        public static async Task<Item> UpdateItem(Item item)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "name", item.Name },
+                { "price", item.Price.ToString()},
+                { "amount", item.Amount.ToString()}
+            };
+            HttpContent content = new FormUrlEncodedContent(values);
+
+            var response = await HttpClient.PutAsync(ApplicationInfo.WebApiKey + "/item/" + item.Id, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+            return item;
         }
         #endregion
     }

@@ -12,7 +12,7 @@
                 <local:AdminUserView/>
             </TabItem>
             <TabItem Header="Item" Width="100">
-                
+                <local:AdminItemView/>
             </TabItem>
         </TabControl>
     </Grid>

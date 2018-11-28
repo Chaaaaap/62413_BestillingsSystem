@@ -99,7 +99,7 @@ namespace WebAPI.Handlers
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Username = dataReader["Username"].ToString(),
                     Password = dataReader["Password"].ToString(),
-                    LatestLogin = Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
+                    LatestLogin = null, //Convert.ToDateTime(dataReader["LatestLogin"].ToString()),
                     Email = dataReader["Email"].ToString(),
                     IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                 };

@@ -85,13 +85,24 @@
     <Compile Include="Helpers\IHavePassword.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Service.cs" />
+    <Compile Include="ViewModels\AdminCreateUserViewModel.cs" />
+    <Compile Include="ViewModels\AdminItemViewModel.cs" />
     <Compile Include="ViewModels\AdminUserViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
+    <Compile Include="Views\AdminCreateUserView.xaml.cs">
+      <DependentUpon>AdminCreateUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminEditUserView.xaml.cs">
+      <DependentUpon>AdminEditUserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdministratorView.xaml.cs">
       <DependentUpon>AdministratorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminItemView.xaml.cs">
+      <DependentUpon>AdminItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdminUserView.xaml.cs">
       <DependentUpon>AdminUserView.xaml</DependentUpon>
@@ -105,7 +116,19 @@
     <Compile Include="Views\RibbonView.xaml.cs">
       <DependentUpon>RibbonView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AdminCreateUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminEditUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AdministratorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

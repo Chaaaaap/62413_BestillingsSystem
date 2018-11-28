@@ -14,6 +14,7 @@ namespace DesktopClient.ViewModels
         public AdminUserViewModel(BaseViewModel parent) : base(parent)
         {
             InitializeCommands();
+            PopulateUsers();
         }
 
         private User _selectedUser;
@@ -41,6 +42,19 @@ namespace DesktopClient.ViewModels
                     return;
                 _tmpUsername = value;
                 OnPropertyChanged(nameof(TmpUsername));
+            }
+        }
+
+        private string _tmpPassword;
+        public string TmpPassword
+        {
+            get => _tmpPassword;
+            set
+            {
+                if (_tmpPassword == value)
+                    return;
+                _tmpPassword = value;
+                OnPropertyChanged(nameof(TmpPassword));
             }
         }
 
@@ -72,23 +86,41 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        //private bool _createUser;
+
+        //public bool CreateUser
+        //{
+        //    get => _createUser;
+        //    set
+        //    {
+        //        if (_createUser == value)
+        //            return;
+        //        _createUser = value;
+        //        OnPropertyChanged(nameof(CreateUser));
+        //    }
+        //}
+
+        //private bool _editUser;
+
+        //public bool EditUser
+        //{
+        //    get => _editUser;
+        //    set
+        //    {
+        //        if (_editUser == value)
+        //            return;
+        //        _editUser = value;
+        //        OnPropertyChanged(nameof(EditUser));
+        //    }
+        //}
+
         public ICommand SaveUserCommand
         {
             get;
             private set;
         }
 
-        private ObservableCollection<User> _users = new ObservableCollection<User>
-        {
-            new User
-            {
-                Username = "Test"
-            },
-            new User
-            {
-                Username = "ny test"
-            }
-        };
+        private ObservableCollection<User> _users = new ObservableCollection<User>();
 
         public ObservableCollection<User> Users
         {
@@ -108,28 +140,12 @@ namespace DesktopClient.ViewModels
 
         public void SaveUserChanges(object sender)
         {
-
-
-            //if(sender is User user)
-            //{
-            //    //var updatedUser = Service.UpdateUser(user).Result;
-            //    var tmpUser = Users.Where(u => u.Id == user.Id).FirstOrDefault();
-            //    if(tmpUser != null)
-            //    {
-            //        Users.Remove(tmpUser);
-            //    }
-            //    Users.Add(user);
-            //    SelectedUser = user;
-            //    OnPropertyChanged(nameof(Users));
-            //    OnPropertyChanged(nameof(SelectedUser));
-            //}
-
             User user = new User
             {
                 Username = TmpUsername ?? SelectedUser.Username,
                 Email = TmpEmail ?? SelectedUser.Email,
                 IsAdmin = TmpIsAdmin ?? SelectedUser.IsAdmin,
-                Password = SelectedUser.Password,
+                Password = TmpPassword ?? SelectedUser.Password,
                 LatestLogin = SelectedUser.LatestLogin,
                 Id = SelectedUser.Id
             };
@@ -149,12 +165,18 @@ namespace DesktopClient.ViewModels
             TmpUsername = null;
             TmpEmail = null;
             TmpIsAdmin = null;
+            TmpPassword = null;
         }
-        
+
+        private async void PopulateUsers()
+        {
+            List<User> userList = await Service.GetAllUsers();
+
+            foreach (User user in userList)
+            {
+                Users.Add(user);
+            }
+        }
     }
 
-    //private async void PopulateUsers()
-    //{
-    //    List<User> userList = await Service.get 
-    //} 
 }
