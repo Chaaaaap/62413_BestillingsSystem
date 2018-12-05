@@ -100,7 +100,7 @@ namespace WebAPI.Handlers
             while (dataReader.Read())
             {
                 byte[] picture = null;
-                if (dataReader["Picture"].GetType().Equals(DBNull.Value))
+                if (dataReader["Picture"] != (DBNull.Value))
                     picture = (byte[])dataReader["Picture"];
 
                 var item = new Item

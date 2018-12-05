@@ -21,6 +21,8 @@
             <con:StringToIntConveter x:Key="StringToIntConverter"/>
             <con:MultiBoolToVisibilityConverter x:Key="MultiBoolToVisibilityConverter"/>
             <con:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <con:MultiImageBindingConverter x:Key="MultiImageBindingConverter"/>
+            <con:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
             <!--<ControlTemplate x:Key="WatermarkedPasswordBoxTemplate" TargetType="{x:Type PasswordBox}">
                 <microsoftWindowsThemes:ListBoxChrome x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
                     <Grid>

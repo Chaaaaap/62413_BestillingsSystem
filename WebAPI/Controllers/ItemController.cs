@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
-        public IActionResult CreateItem([FromForm] Item item)
+        public IActionResult CreateItem([FromBody] Item item)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateItem([FromForm] Item item, int id)
+        public IActionResult UpdateItem([FromBody] Item item, int id)
         {
             try
             {

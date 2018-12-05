@@ -70,12 +70,19 @@
                 </TextBox.Text>
             </TextBox>
             <Label Content="Picture"/>
-            <Grid>
+            <Grid Height="72">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox  Style="{StaticResource AdminTextBox}" Grid.Column="0"/>
+                <Image Grid.Column="0" MaxWidth="72" MaxHeight="72">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource MultiImageBindingConverter}">
+                            <Binding Path="SelectedItem.Picture" Converter="{StaticResource ByteArrayToImageSourceConverter}"/>
+                            <Binding Path="Img"/>
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
                 <Button Content="Browse" Height="25" Margin="5,0,0,10" Command="{Binding BrowseCommand}" Grid.Column="1"/>
             </Grid>
             <Button Content="Save changes" Height="25" Visibility="{Binding EditItem, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding SaveItemCommand}"/>

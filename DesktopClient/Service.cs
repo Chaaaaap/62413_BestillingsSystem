@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Security;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Common;
 using Common.Models;
 using Common.Utils;
+using Newtonsoft.Json;
 
 namespace DesktopClient
 {
@@ -133,15 +135,11 @@ namespace DesktopClient
 
         public static async Task<Item> UpdateItem(Item item)
         {
-            var values = new Dictionary<string, string>
-            {
-                { "name", item.Name },
-                { "price", item.Price.ToString()},
-                { "amount", item.Amount.ToString()}
-            };
-            HttpContent content = new FormUrlEncodedContent(values);
+            var myContent = JsonConvert.SerializeObject(item);
 
-            var response = await HttpClient.PutAsync(ApplicationInfo.WebApiKey + "/item/" + item.Id, content);
+            var stringContent = new StringContent(myContent, UnicodeEncoding.UTF8, "application/json");
+
+            var response = await HttpClient.PutAsync(ApplicationInfo.WebApiKey + "/item/" + item.Id, stringContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -152,14 +150,12 @@ namespace DesktopClient
 
         public static async Task<Item> CreateItem(Item item)
         {
-            var values = new Dictionary<string, string>
-            {
-                { "name", item.Name },
-                { "Amount", item.Amount.ToString()},
-                { "Price", item.Price.ToString()},
-            };
-            HttpContent content = new FormUrlEncodedContent(values);
-            var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/item", content);
+
+            var myContent = JsonConvert.SerializeObject(item);
+
+            var stringContent = new StringContent(myContent, UnicodeEncoding.UTF8, "application/json");
+
+            var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/item", stringContent);
 
             if (!response.IsSuccessStatusCode)
             {
