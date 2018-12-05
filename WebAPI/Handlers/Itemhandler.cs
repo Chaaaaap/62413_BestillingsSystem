@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Common;
 using Common.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
@@ -33,9 +34,16 @@ namespace WebAPI.Handlers
             sql = "INSERT INTO ItemStorage (ItemId, Storage) VALUES (@ItemId, @Amount);";
             cmd = new MySqlCommand(sql, _conn);
 
-
             cmd.Parameters.AddWithValue("@ItemId", id);
             cmd.Parameters.AddWithValue("@Amount", item.Amount);
+
+            cmd.ExecuteNonQuery();
+
+            sql = "INSERT INTO ItemPictures () VALUES (@ItemId, @Picture);";
+            cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@ItemId", id);
+            cmd.Parameters.AddWithValue("@Picture", item.Picture);
 
             cmd.ExecuteNonQuery();
         }
@@ -60,6 +68,14 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Id", id);
 
             cmd.ExecuteNonQuery();
+
+            sql = "DELETE FROM ItemPictures Where ItemId = @Id;";
+            cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            cmd.ExecuteNonQuery();
+
 
             sql = "DELETE FROM Items WHERE Id = @Id;";
             cmd = new MySqlCommand(sql, _conn);
@@ -125,18 +141,18 @@ namespace WebAPI.Handlers
 
         public void UpdateItem(long id, Item item)
         {
-            var sql = "UPDATE Items SET  Name= @Name, Price = @Price, Picture = @Picture where Id = @Id;";
+            var sql = "UPDATE Items SET  Name= @Name, Price = @Price where Id = @Id;";
 
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Name", item.Name);
             cmd.Parameters.AddWithValue("@Price", item.Price);
-            cmd.Parameters.AddWithValue("@Picture", item.Picture);
 
             cmd.ExecuteNonQuery();
 
             UpdateAmount(id, item.Amount);
+            UpdatePicture(id, item.Picture);
         }
 
         public byte[] GetItemPicture(long itemId)
@@ -164,6 +180,17 @@ namespace WebAPI.Handlers
 
             cmd.Parameters.AddWithValue("@pic", image);
             cmd.Parameters.AddWithValue("@itemId", itemId);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        private void UpdatePicture(long itemId, byte[] image)
+        {
+            var sql = "UPDATE ItemPictures SET Picture = @Picture WHERE ItemId = @Id;";
+
+            var cmd = new MySqlCommand(sql, _conn);
+            cmd.Parameters.AddWithValue("@Picture", image);
+            cmd.Parameters.AddWithValue("@Id", itemId);
 
             cmd.ExecuteNonQuery();
         }
