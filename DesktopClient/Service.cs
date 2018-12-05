@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Security;
 using System.Threading.Tasks;
@@ -36,6 +34,18 @@ namespace DesktopClient
                 return await JsonUtility.ParseJson<User>(response);
             }
             return null;
+        }
+
+        public static async Task<HttpResponseMessage> DeleteUser(User user)
+        {
+            var response = await HttpClient.DeleteAsync(ApplicationInfo.WebApiKey + "/user/" + user.Id);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+
+            return response;
         }
 
         public static async void RegisterUser(User user)
@@ -104,6 +114,7 @@ namespace DesktopClient
             }
             return user;
         }
+        
         #endregion
 
         #region Items
@@ -155,6 +166,17 @@ namespace DesktopClient
             }
 
             return item;
+        }
+
+        public static async Task<HttpResponseMessage> DeleteItem(Item item)
+        {
+            var response = await HttpClient.DeleteAsync(ApplicationInfo.WebApiKey + "/item/" + item.Id);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+            return response;
         }
         #endregion
     }

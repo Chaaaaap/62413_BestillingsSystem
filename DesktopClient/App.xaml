@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:DesktopClient"
              xmlns:helpers="clr-namespace:WPF.Helpers;assembly=WPF"
              xmlns:microsoftWindowsThemes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-             StartupUri="Views/LoginWindow.xaml">
+             StartupUri="Views/AdministratorView.xaml">
     <Application.Resources>
         
         <ResourceDictionary>
@@ -19,6 +19,8 @@
             <con:MultiBoolConverterBinding x:Key="MultiBoolConverterBinding"/>
             <con:StringToDoubleConverter x:Key="StringToDoubleConverter"/>
             <con:StringToIntConveter x:Key="StringToIntConverter"/>
+            <con:MultiBoolToVisibilityConverter x:Key="MultiBoolToVisibilityConverter"/>
+            <con:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
             <!--<ControlTemplate x:Key="WatermarkedPasswordBoxTemplate" TargetType="{x:Type PasswordBox}">
                 <microsoftWindowsThemes:ListBoxChrome x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
                     <Grid>
