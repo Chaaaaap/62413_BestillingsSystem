@@ -49,6 +49,20 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        private string _tmpSearch;
+
+        public string TmpSearch
+        {
+            get => _tmpSearch;
+            set
+            {
+                if (_tmpSearch == value)
+                    return;
+                _tmpSearch = value;
+                OnPropertyChanged(nameof(TmpSearch));
+            }
+        }
+
         private string _tmpPassword;
         public string TmpPassword
         {
@@ -135,6 +149,23 @@ namespace DesktopClient.ViewModels
             get;
             private set;
         }
+        public ICommand DeleteUserCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand SearchUserCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ClearCommand
+        {
+            get;
+            private set;
+        }
 
         private ObservableCollection<User> _users = new ObservableCollection<User>();
 
@@ -149,11 +180,42 @@ namespace DesktopClient.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
+
+        public async void Clear(object sender)
+        {
+            TmpSearch = "";
+            await PopulateUsers();
+        }
+        
         private void InitializeCommands()
         {
             SaveUserCommand = new CommandHandler(SaveUserChanges);
             CreateUserCommand = new CommandHandler(AdminCreateUser);
             AdminCreateUserCommand = new CommandHandler(CreateUserClicked);
+            DeleteUserCommand = new CommandHandler(DeleteUser);
+            SearchUserCommand = new CommandHandler(SearchUser);
+            ClearCommand = new CommandHandler(Clear);
+        }
+
+        public async void SearchUser(object sender)
+        {
+            await PopulateUsers();
+            var temp = Users.Select(x => x).Where(x => x.Username.ToLower().Contains(TmpSearch.ToLower()));
+
+            List<User> userTemp = new List<User>();
+
+            foreach (User user in temp)
+            {
+                userTemp.Add(user);
+            }
+
+            Users.Clear();
+
+            foreach (User user in userTemp)
+            {
+                Users.Add(user);
+            }
+            OnPropertyChanged(nameof(Users));
         }
 
         public async void AdminCreateUser(object sender)
@@ -172,9 +234,14 @@ namespace DesktopClient.ViewModels
             TmpEmail = null;
             TmpIsAdmin = null;
             TmpPassword = null;
-            PopulateUsers();
+            await PopulateUsers();
         }
 
+        public async void DeleteUser(object sender)
+        {
+            await Service.DeleteUser(SelectedUser);
+            await PopulateUsers();
+        }
         public async void SaveUserChanges(object sender)
         {
             User user = new User
@@ -188,7 +255,7 @@ namespace DesktopClient.ViewModels
             };
 
             var updatedUser = await Service.UpdateUser(user);
-            PopulateUsers();
+            await PopulateUsers();
 
             OnPropertyChanged(nameof(Users));
             OnPropertyChanged(nameof(SelectedUser));
@@ -211,7 +278,7 @@ namespace DesktopClient.ViewModels
 
         }
 
-        private async void PopulateUsers()
+        private async Task<ObservableCollection<User>> PopulateUsers()
         {
             List<User> userList = await Service.GetAllUsers();
             Users.Clear();
@@ -220,6 +287,7 @@ namespace DesktopClient.ViewModels
             {
                 Users.Add(user);
             }
+            return Users;
         }
     }
 

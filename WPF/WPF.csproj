@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Controls\ImageButton.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Common;
 using Common.Models;
@@ -48,6 +49,20 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        private string _tmpSearch;
+
+        public string TmpSearch
+        {
+            get => _tmpSearch;
+            set
+            {
+                if (_tmpSearch == value)
+                    return;
+                _tmpSearch = value;
+                OnPropertyChanged(nameof(TmpSearch));
+            }
+        }
+
         private double? _tmpPrice;
 
         public double? TmpPrice
@@ -73,6 +88,20 @@ namespace DesktopClient.ViewModels
                     return;
                 _tmpAmount = value;
                 OnPropertyChanged(nameof(TmpAmount));
+            }
+        }
+
+        private byte[] _tmpPic;
+
+        public byte[] TmpPic
+        {
+            get => _tmpPic;
+            set
+            {
+                if (_tmpPic == value)
+                    return;
+                _tmpPic = value;
+                OnPropertyChanged(nameof(TmpPic));
             }
         }
 
@@ -118,7 +147,7 @@ namespace DesktopClient.ViewModels
             }
         }
 
-        private async void PopulateItems()
+        private async Task<ObservableCollection<Item>> PopulateItems()
         {
             List<Item> itemList = await Service.GetAllItems();
             Items.Clear();
@@ -126,6 +155,7 @@ namespace DesktopClient.ViewModels
             {
                 Items.Add(item);
             }
+            return Items;
         }
 
         public ICommand SaveItemCommand
@@ -143,12 +173,79 @@ namespace DesktopClient.ViewModels
             get;
             private set;
         }
+        public ICommand DeleteItemCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand SearchItemCommand
+        {
+            get;
+            private set;
+        }
 
+        public ICommand ClearCommand
+        {
+            get;
+            private set;
+        }
+        public ICommand BrowseCommand
+        {
+            get;
+            private set;
+        }
         private void InitializeCommands()
         {
             SaveItemCommand = new CommandHandler(SaveItemChanges);
             CreateItemCommand = new CommandHandler(AdminCreateItem);
             AdminCreateItemCommand = new CommandHandler(CreateItemClicked);
+            DeleteItemCommand = new CommandHandler(DeleteItem);
+            SearchItemCommand = new CommandHandler(SearchItem);
+            ClearCommand = new CommandHandler(Clear);
+            BrowseCommand = new CommandHandler(Browse);
+        }
+
+        public void Browse(object sender)
+        {
+            var FD = new OpenFileDialog();
+            if (FD.ShowDialog() == DialogResult.OK)
+            {
+                Image img = Image.FromFile(FD.FileName);
+                byte[] arr;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    arr = ms.ToArray();
+                    TmpPic = arr;
+                }
+            }
+        }
+
+        public async void Clear(object sender)
+        {
+            TmpSearch = "";
+            await PopulateItems();
+        }
+
+        public async void SearchItem(object sender)
+        {
+            await PopulateItems();
+            var temp = Items.Select(x => x).Where(x => x.Name.ToLower().Contains(TmpSearch.ToLower()));
+
+            List<Item> itemTemp = new List<Item>();
+
+            foreach (Item item in temp)
+            {
+                itemTemp.Add(item);
+            }
+
+            Items.Clear();
+
+            foreach (Item item in itemTemp)
+            {
+                Items.Add(item);
+            }
+            OnPropertyChanged(nameof(Items));
         }
 
         public async void SaveItemChanges(object sender)
@@ -162,7 +259,7 @@ namespace DesktopClient.ViewModels
             };
 
             var updatedItem = await Service.UpdateItem(item);
-            PopulateItems();
+            await PopulateItems();
 
             OnPropertyChanged(nameof(Items));
             OnPropertyChanged(nameof(SelectedItem));
@@ -186,7 +283,13 @@ namespace DesktopClient.ViewModels
             TmpName = null;
             TmpAmount = null;
             TmpPrice = null;
-            PopulateItems();
+            await PopulateItems();
+        }
+
+        public async void DeleteItem(object sender)
+        {
+            await Service.DeleteItem(SelectedItem);
+            await PopulateItems();
         }
 
         private void CreateItemClicked(object sender)
