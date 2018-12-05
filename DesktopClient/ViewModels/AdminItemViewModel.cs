@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Common;
 using Common.Models;
 
@@ -30,8 +32,23 @@ namespace DesktopClient.ViewModels
                 EditItem = true;
                 if (_selectedItem == value)
                     return;
+                Img = null;
                 _selectedItem = value;
                 OnPropertyChanged(nameof(SelectedItem));
+            }
+        }
+
+        private ImageSource _img;
+
+        public ImageSource Img
+        {
+            get => _img;
+            set
+            {
+                if (_img == value)
+                    return;
+                _img = value;
+                OnPropertyChanged(nameof(Img));
             }
         }
 
@@ -217,6 +234,15 @@ namespace DesktopClient.ViewModels
                     img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                     arr = ms.ToArray();
                     TmpPic = arr;
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = ms;
+                    bitmapImage.EndInit();
+
+                    Img = bitmapImage;
                 }
             }
         }
@@ -255,7 +281,8 @@ namespace DesktopClient.ViewModels
                 Name = TmpName ?? SelectedItem.Name,
                 Price = TmpPrice ?? SelectedItem.Price,
                 Amount = TmpAmount ?? SelectedItem.Amount,
-                Id = SelectedItem.Id
+                Id = SelectedItem.Id,
+                Picture = TmpPic != null ? TmpPic: SelectedItem.Picture ?? new byte[0]
             };
 
             var updatedItem = await Service.UpdateItem(item);
@@ -267,6 +294,7 @@ namespace DesktopClient.ViewModels
             TmpName = null;
             TmpPrice = null;
             TmpAmount = null;
+            TmpPic = null;
         }
 
         public async void AdminCreateItem(object sender)
@@ -276,13 +304,15 @@ namespace DesktopClient.ViewModels
             {
                 Name = TmpName,
                 Price = TmpPrice ?? 0.0,
-                Amount = TmpAmount ?? 0
+                Amount = TmpAmount ?? 0,
+                Picture = TmpPic ?? null
             };
 
             await Service.CreateItem(item);
             TmpName = null;
             TmpAmount = null;
             TmpPrice = null;
+            TmpPic = null;
             await PopulateItems();
         }
 

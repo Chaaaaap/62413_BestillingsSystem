@@ -92,20 +92,24 @@ namespace WebAPI.Handlers
 
         public List<Item> GetAllItems()
         {
-            const string sql = "select Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Id = ItemId inner join ItemPictures on Id = ItemId;";
+            const string sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId left join ItemPictures on Items.Id = ItemPictures.ItemId;";
             var cmd = new MySqlCommand(sql, _conn);
 
             var itemList = new List<Item>();
             var dataReader = cmd.ExecuteReader();
             while (dataReader.Read())
             {
+                byte[] picture = null;
+                if (dataReader["Picture"] != (DBNull.Value))
+                    picture = (byte[])dataReader["Picture"];
+
                 var item = new Item
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
                     Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
                     Price = Convert.ToDouble(dataReader["Price"].ToString()),
-                    Picture = (byte[]) dataReader["Picture"]
+                    Picture = picture
                 };
                 itemList.Add(item);
             }
@@ -114,7 +118,7 @@ namespace WebAPI.Handlers
 
         public Item GetItem(long id)
         {
-            var sql = "select Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Id = ItemId inner join ItemPictures on Id = ItemId where Id = @Id;";
+            var sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId inner join ItemPictures on Items.Id = ItemPictures.ItemId where Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
