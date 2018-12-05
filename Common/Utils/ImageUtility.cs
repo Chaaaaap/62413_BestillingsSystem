@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace Common.Utils
@@ -15,12 +16,20 @@ namespace Common.Utils
                 ms.Write(imageBytes, 0, imageBytes.Length);
                 image = Image.FromStream(ms, true);
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e);
             }
 
             return image;
+        }
+
+        public byte[] ConvertImageToByteArray(Image image)
+        {
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Bmp);
+
+            return ms.ToArray();
         }
     }
 }
