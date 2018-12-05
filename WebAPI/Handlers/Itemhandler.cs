@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Common.Models;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
@@ -39,7 +40,7 @@ namespace WebAPI.Handlers
             cmd.ExecuteNonQuery();
         }
 
-        public void updateAmount(long id, int amount)
+        public void UpdateAmount(long id, int amount)
         {
             var sql = "UPDATE ItemStorage SET  Storage = @Amount where ItemId = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
@@ -75,7 +76,7 @@ namespace WebAPI.Handlers
 
         public List<Item> GetAllItems()
         {
-            const string sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId;";
+            const string sql = "select Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Id = ItemId inner join ItemPictures on Id = ItemId;";
             var cmd = new MySqlCommand(sql, _conn);
 
             var itemList = new List<Item>();
@@ -87,7 +88,8 @@ namespace WebAPI.Handlers
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
                     Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
-                    Price = Convert.ToDouble(dataReader["Price"].ToString())
+                    Price = Convert.ToDouble(dataReader["Price"].ToString()),
+                    Picture = (byte[]) dataReader["Picture"]
                 };
                 itemList.Add(item);
             }
@@ -96,7 +98,7 @@ namespace WebAPI.Handlers
 
         public Item GetItem(long id)
         {
-            var sql = "select Id, Name, Price, Storage from Items inner join ItemStorage on Id = ItemId; where Id = @Id;";
+            var sql = "select Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Id = ItemId inner join ItemPictures on Id = ItemId where Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
@@ -113,7 +115,8 @@ namespace WebAPI.Handlers
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
                     Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
-                    Price = Convert.ToDouble(dataReader["Price"].ToString())
+                    Price = Convert.ToDouble(dataReader["Price"].ToString()),
+                    Picture = (byte[]) dataReader["Picture"]
                 };
             }
 
@@ -122,19 +125,48 @@ namespace WebAPI.Handlers
 
         public void UpdateItem(long id, Item item)
         {
-            var sql = "UPDATE Items SET  Name= @Name, Price = @Price where Id = @Id;";
+            var sql = "UPDATE Items SET  Name= @Name, Price = @Price, Picture = @Picture where Id = @Id;";
 
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
             cmd.Parameters.AddWithValue("@Name", item.Name);
             cmd.Parameters.AddWithValue("@Price", item.Price);
+            cmd.Parameters.AddWithValue("@Picture", item.Picture);
 
             cmd.ExecuteNonQuery();
 
-            updateAmount(id, item.Amount);
+            UpdateAmount(id, item.Amount);
         }
-    
+
+        public byte[] GetItemPicture(long itemId)
+        {
+            var sql = "SELECT Picture FROM ItemPictures WHERE ItemId=@itemId;";
+
+            var cmd = new MySqlCommand(sql, _conn);
+            cmd.Parameters.AddWithValue("@itemId", itemId);
+
+            var dataReader = cmd.ExecuteReader();
+
+            if (dataReader.Read())
+            {
+                return (byte[]) dataReader["Picture"];
+            }
+
+            return null;
+        }
+
+        public void AddItemPicture(long itemId, byte[] image)
+        {
+            var sql = "INSERT INTO ItemPictures (Picture, ItemId) VALUES (@pic, @itemId);";
+
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@pic", image);
+            cmd.Parameters.AddWithValue("@itemId", itemId);
+
+            cmd.ExecuteNonQuery();
+        }
     
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Common;
+using Common.Models;
 using Common.Utils;
 using DesktopClient.Helpers;
 using DesktopClient.Views;

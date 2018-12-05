@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Common;
+using Common.Models;
 
 namespace DesktopClient.ViewModels
 {

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using Common;
+using Common.Models;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers

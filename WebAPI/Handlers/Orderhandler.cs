@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Common.Models;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers
@@ -39,7 +40,7 @@ namespace WebAPI.Handlers
                 cmd.Parameters.AddWithValue("@Amount", element.Value);
 
 
-                itemHandler.updateAmount(element.Key.Id, -element.Value);
+                itemHandler.UpdateAmount(element.Key.Id, -element.Value);
             }
         }
 
@@ -65,7 +66,7 @@ namespace WebAPI.Handlers
             cmd.ExecuteNonQuery();
 
             foreach (var element in order.ItemsAmount){
-                itemHander.updateAmount(element.Key.Id, element.Value);
+                itemHander.UpdateAmount(element.Key.Id, element.Value);
             }
 
         }

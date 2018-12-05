@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Common;
+using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Handlers;
@@ -119,6 +120,24 @@ namespace WebAPI.Controllers
                 Console.WriteLine(e);
                 return NotFound();
             }
+        }
+
+        [HttpPost("{itemId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult AddItemPicture(long itemId, byte[] image)
+        {
+            try
+            {
+                _handler.AddItemPicture(itemId, image);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+
+            return Ok();
         }
     }
 }
