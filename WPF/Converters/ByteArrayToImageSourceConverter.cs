@@ -14,7 +14,7 @@ namespace WPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value == null || ((byte[]) value).Length == 0)
                 return null;
             var image = new BitmapImage();
             using (var mem = new MemoryStream((byte[]) value))
