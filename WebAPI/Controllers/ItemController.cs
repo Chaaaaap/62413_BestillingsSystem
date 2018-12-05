@@ -120,5 +120,23 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost("{itemId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult AddItemPicture(long itemId, byte[] image)
+        {
+            try
+            {
+                _handler.AddItemPicture(itemId, image);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+
+            return Ok();
+        }
     }
 }

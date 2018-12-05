@@ -39,7 +39,7 @@ namespace WebAPI.Handlers
             cmd.ExecuteNonQuery();
         }
 
-        public void updateAmount(long id, int amount)
+        public void UpdateAmount(long id, int amount)
         {
             var sql = "UPDATE ItemStorage SET  Storage = @Amount where ItemId = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
@@ -132,9 +132,37 @@ namespace WebAPI.Handlers
 
             cmd.ExecuteNonQuery();
 
-            updateAmount(id, item.Amount);
+            UpdateAmount(id, item.Amount);
         }
-    
+
+        public byte[] GetItemPicture(long itemId)
+        {
+            var sql = "SELECT Picture FROM ItemPictures WHERE itemId=@itemId;";
+
+            var cmd = new MySqlCommand(sql, _conn);
+            cmd.Parameters.AddWithValue("@itemId", itemId);
+
+            var dataReader = cmd.ExecuteReader();
+
+            if (dataReader.Read())
+            {
+                return (byte[]) dataReader["Picture"];
+            }
+
+            return null;
+        }
+
+        public void AddItemPicture(long itemId, byte[] image)
+        {
+            var sql = "INSERT INTO ItemPictures (Picture, ItemId) VALUES (@pic, @itemId);";
+
+            var cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@pic", image);
+            cmd.Parameters.AddWithValue("@itemId", itemId);
+
+            cmd.ExecuteNonQuery();
+        }
     
     }
 }
