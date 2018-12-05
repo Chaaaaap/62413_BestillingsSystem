@@ -255,7 +255,8 @@ namespace DesktopClient.ViewModels
                 Name = TmpName ?? SelectedItem.Name,
                 Price = TmpPrice ?? SelectedItem.Price,
                 Amount = TmpAmount ?? SelectedItem.Amount,
-                Id = SelectedItem.Id
+                Id = SelectedItem.Id,
+                Picture = TmpPic ?? SelectedItem.Picture
             };
 
             var updatedItem = await Service.UpdateItem(item);
@@ -267,6 +268,7 @@ namespace DesktopClient.ViewModels
             TmpName = null;
             TmpPrice = null;
             TmpAmount = null;
+            TmpPic = null;
         }
 
         public async void AdminCreateItem(object sender)
@@ -276,13 +278,15 @@ namespace DesktopClient.ViewModels
             {
                 Name = TmpName,
                 Price = TmpPrice ?? 0.0,
-                Amount = TmpAmount ?? 0
+                Amount = TmpAmount ?? 0,
+                Picture = TmpPic ?? null
             };
 
             await Service.CreateItem(item);
             TmpName = null;
             TmpAmount = null;
             TmpPrice = null;
+            TmpPic = null;
             await PopulateItems();
         }
 
