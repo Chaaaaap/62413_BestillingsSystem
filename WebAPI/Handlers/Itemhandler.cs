@@ -137,7 +137,7 @@ namespace WebAPI.Handlers
 
         public byte[] GetItemPicture(long itemId)
         {
-            var sql = "SELECT Picture FROM ItemPictures WHERE itemId=@itemId;";
+            var sql = "SELECT Picture FROM ItemPictures WHERE ItemId=@itemId;";
 
             var cmd = new MySqlCommand(sql, _conn);
             cmd.Parameters.AddWithValue("@itemId", itemId);
