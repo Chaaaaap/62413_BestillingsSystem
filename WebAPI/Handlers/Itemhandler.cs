@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using Common.Models;
 using MySql.Data.MySqlClient;
 
 namespace WebAPI.Handlers

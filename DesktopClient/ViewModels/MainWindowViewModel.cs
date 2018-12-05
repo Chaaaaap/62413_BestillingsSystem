@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
+using Common.Models;
 
 namespace DesktopClient.ViewModels
 {

@@ -6,6 +6,7 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Web;
 using Common;
+using Common.Models;
 using Common.Utils;
 
 namespace DesktopClient

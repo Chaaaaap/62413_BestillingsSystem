@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Common;
+using Common.Models;
 
 namespace DesktopClient.ViewModels
 {
