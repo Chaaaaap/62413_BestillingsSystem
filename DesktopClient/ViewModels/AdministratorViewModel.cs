@@ -11,20 +11,20 @@ namespace DesktopClient.ViewModels
         public AdministratorViewModel(BaseViewModel parent) : base(parent)
         {
             Name = "Administrator";
-            Image img = Image.FromFile("\\Icons\\key.png");
-            using (MemoryStream ms = new MemoryStream())
-            {
-                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                ms.Seek(0, SeekOrigin.Begin);
+            //Image img = Image.FromFile("\\Icons\\key.png");
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //    ms.Seek(0, SeekOrigin.Begin);
 
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
+            //    var bitmapImage = new BitmapImage();
+            //    bitmapImage.BeginInit();
+            //    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            //    bitmapImage.StreamSource = ms;
+            //    bitmapImage.EndInit();
 
-                Icon = bitmapImage;
-            }
+            //    Icon = bitmapImage;
+            //}
         }
 
         public string Name { get; set; }

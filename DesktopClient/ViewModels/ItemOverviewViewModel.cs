@@ -90,6 +90,7 @@ namespace DesktopClient.ViewModels
                 Items.Add(item);
             }
             OnPropertyChanged(nameof(Items));
+            OnPropertyChanged(nameof(TmpSearch));
         }
 
         public async void ClearSearch(object sender)
