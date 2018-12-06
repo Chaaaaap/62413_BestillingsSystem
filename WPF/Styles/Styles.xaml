@@ -9,7 +9,7 @@
 
     <!-- Brushes -->
     <SolidColorBrush x:Key="ValidationErrorBrush" Color="Red"/>
-    <SolidColorBrush x:Key="RibbonBackgroundBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="RibbonBackgroundBrush" Color="Transparent"/>
 
     <!-- Styles -->
     <Style TargetType="{x:Type Control}" x:Key="LoginPage">
