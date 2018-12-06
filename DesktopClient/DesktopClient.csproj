@@ -90,16 +90,21 @@
     <Compile Include="Helpers\IHavePassword.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Service.cs" />
+    <Compile Include="ViewModels\AdministratorViewModel.cs" />
     <Compile Include="ViewModels\AdminItemViewModel.cs" />
     <Compile Include="ViewModels\AdminUserViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ItemOverviewViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\OrderHistoryViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RibbonViewModel.cs" />
     <Compile Include="Views\AdministratorView.xaml.cs">
       <DependentUpon>AdministratorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrderHistoryView.xaml.cs">
+      <DependentUpon>OrderHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdminItemView.xaml.cs">
       <DependentUpon>AdminItemView.xaml</DependentUpon>
@@ -122,6 +127,10 @@
     <Page Include="Views\AdministratorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OrderHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AdminItemView.xaml">
       <SubType>Designer</SubType>
@@ -201,6 +210,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\EventArgs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\document_notebook.png" />
+    <Resource Include="Icons\key.png" />
+    <Resource Include="Icons\shopping_cart2.png" />
+    <Resource Include="Icons\symbol_at.png" />
+    <Resource Include="Icons\user.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

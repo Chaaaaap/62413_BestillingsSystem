@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace DesktopClient.Views
 {
     /// <summary>
-    /// Interaction logic for AdministratorView.xaml
     /// </summary>
-    public partial class AdministratorView : UserControl
+    public partial class OrderHistoryView : UserControl
     {
-        public AdministratorView()
+        public OrderHistoryView()
         {
             InitializeComponent();
-            DataContext = new AdministratorViewModel(null);
+            DataContext = new OrderHistoryViewModel(null);
         }
     }
 }
