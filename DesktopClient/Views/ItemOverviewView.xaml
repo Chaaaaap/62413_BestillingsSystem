@@ -28,7 +28,6 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <!--There should be an image of the item here-->
                         <Image Height="96" Width="96" Source="{Binding Picture, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
                         <TextBlock Text="{Binding Name}"/>
                         <TextBlock Text="{Binding Price}"/>

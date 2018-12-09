@@ -40,10 +40,25 @@ namespace DesktopClient.ViewModels
                 OnPropertyChanged(TmpSearch);
             }
         }
+
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name)
+                  return;
+                _name = value;
+                OnPropertyChanged(Name);
+            }
+        }
         #endregion
 
         public ItemOverviewViewModel(BaseViewModel parent) : base(parent)
         {
+            Name = "Shopping";
             InitializeCommands();
             PopulateItems();
         }
