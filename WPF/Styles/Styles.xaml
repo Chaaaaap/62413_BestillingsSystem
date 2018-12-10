@@ -21,9 +21,12 @@
     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource LoginPage}" x:Key="LoginPageLabel">
         <Setter Property="Margin" Value="0 5 0 0"/>
     </Style>
+
+    <!--#region buttons-->
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LoginPage}" x:Key="LoginButton">
         <Setter Property="Margin" Value="0 15 0 5" />
     </Style>
+
     <Style TargetType="{x:Type Button}" x:Key="LinkButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -31,6 +34,13 @@
         <Setter Property="Margin" Value="0 10 0 5"/>
         <Setter Property="IsTabStop" Value="True" />
     </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="SearchButtonStyle">
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Padding" Value="2,0,0,0" />
+    </Style>
+    <!--#endregion-->
     <Style TargetType="{x:Type Control}" x:Key="AdminTextBox">
         <Setter Property="Margin" Value="0,0,0,10"/>
         <Setter Property="Height" Value="25"/>
