@@ -11,12 +11,12 @@ namespace DesktopClient.ViewModels
 {
     public class ShoppingCartViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> OrderItems { get; set; }
+        public readonly ObservableCollection<Item> OrderItems = new ObservableCollection<Item>();
 
 
-        public void AddItemToCart(ItemAddedEventArgs e)
+        private void AddItemToCart(ItemAddedEventArgs e)
         {
-            
+            OrderItems.Add(e.ItemAdded);
         }
 
         public ShoppingCartViewModel(BaseViewModel parent) : base(parent)
