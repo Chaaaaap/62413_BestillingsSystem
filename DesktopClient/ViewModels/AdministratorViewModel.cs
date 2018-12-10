@@ -11,7 +11,7 @@ namespace DesktopClient.ViewModels
         public AdministratorViewModel(BaseViewModel parent) : base(parent)
         {
             Name = "Administrator";
-            Image img = Image.FromFile("\\Icons\\key.png");
+            Image img = Image.FromFile("C:\\Users\\cille_000\\Documents\\DTU\\c#\\DesktopClient\\Icons\\key.png");
             using (MemoryStream ms = new MemoryStream())
             {
                 img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);

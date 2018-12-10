@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:DesktopClient"
              xmlns:helpers="clr-namespace:WPF.Helpers;assembly=WPF"
              xmlns:microsoftWindowsThemes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-             StartupUri="Views/MainWindow.xaml">
+             StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
         
         <ResourceDictionary>
