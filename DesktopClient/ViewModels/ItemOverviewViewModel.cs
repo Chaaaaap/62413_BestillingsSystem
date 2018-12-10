@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Common.Models;
+using DesktopClient.Events;
 
 namespace DesktopClient.ViewModels
 {
@@ -63,8 +65,11 @@ namespace DesktopClient.ViewModels
             PopulateItems();
         }
 
+        public Item SelectedItem;
         public ICommand SearchItemCommand { get; set; }
         public ICommand ClearSearchCommand { get; set; }
+
+
 
         private void InitializeCommands()
         {
@@ -112,6 +117,11 @@ namespace DesktopClient.ViewModels
         {
             await PopulateItems();
             TmpSearch = "";
+        }
+
+        public void AddItemClicked()
+        {
+            PublishEvent<ItemAddedEvent, ItemAddedEventArgs>(new ItemAddedEventArgs { ItemAdded = SelectedItem });
         }
     }
 }
