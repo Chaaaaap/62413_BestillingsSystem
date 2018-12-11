@@ -101,6 +101,8 @@ namespace WebAPI.Handlers
             }
             order.ItemsAmount = itemAmount;
             orderList.Add(order);
+
+            dataReader.Close();
             return orderList;
 
         }
@@ -141,6 +143,8 @@ namespace WebAPI.Handlers
             }
             order.ItemsAmount = itemAmount;
             orderList.Add(order);
+
+            dataReader.Close();
             return orderList;
         }
 
@@ -167,8 +171,9 @@ namespace WebAPI.Handlers
                     TotalPrice = Convert.ToDouble(dataReader["TotalPrice"].ToString())
                 };
             }
-            dataReader.Close();
             order.ItemsAmount = itemAmount;
+
+            dataReader.Close();
             return order;
         }
 

@@ -79,6 +79,8 @@ namespace WebAPI.Handlers
                     IsAdmin = Convert.ToBoolean(dataReader["isAdmin"].ToString())
                 };
             }
+
+            dataReader.Close();
             return user;
         }
 
@@ -106,6 +108,7 @@ namespace WebAPI.Handlers
                 };
                 userList.Add(user);
             }
+            dataReader.Close();
             return userList;
         }
 

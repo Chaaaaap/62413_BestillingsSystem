@@ -113,6 +113,7 @@ namespace WebAPI.Handlers
                 };
                 itemList.Add(item);
             }
+            dataReader.Close();
             return itemList;
         }
 
@@ -126,8 +127,6 @@ namespace WebAPI.Handlers
             Item item = null;
             var dataReader = cmd.ExecuteReader();
 
-            
-
             while (dataReader.Read())
             {
                 item = new Item
@@ -139,7 +138,7 @@ namespace WebAPI.Handlers
                     Picture = (byte[]) dataReader["Picture"]
                 };
             }
-
+            dataReader.Close();
             return item;
         }
 
@@ -170,9 +169,10 @@ namespace WebAPI.Handlers
 
             if (dataReader.Read())
             {
+                dataReader.Close();
                 return (byte[]) dataReader["Picture"];
             }
-
+            dataReader.Close();
             return null;
         }
 
