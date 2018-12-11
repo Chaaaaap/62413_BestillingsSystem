@@ -28,6 +28,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="Purchase"/>
+        <Button Content="Purchase" Command="{Binding PurchaseCommand}"/>
     </StackPanel>
 </UserControl>

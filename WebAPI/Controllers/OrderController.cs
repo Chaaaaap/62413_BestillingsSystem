@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
-        public IActionResult CreateOrder([FromForm] Order order)
+        public IActionResult CreateOrder([FromBody] Order order)
         {
             try
             {

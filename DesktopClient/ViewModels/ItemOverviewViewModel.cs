@@ -84,6 +84,20 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        private double _totalPrice;
+
+        public double TotalPrice
+        {
+            get => _totalPrice;
+            set
+            {
+                if (value == _totalPrice)
+                    return;
+                _totalPrice = value;
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+
         #endregion
 
         public ItemOverviewViewModel(BaseViewModel parent) : base(parent)
@@ -150,12 +164,32 @@ namespace DesktopClient.ViewModels
 
         public void AddItemClicked(object sender)
         {
+            TotalPrice += SelectedItem.Price;
             SelectedItems.Add(SelectedItem);
         }
 
-        public void Purchase(object sender)
+        public async void Purchase(object sender)
         {
+            var itemAmount = new Dictionary<long, int>();
+            foreach (var items in SelectedItems)
+            {
+                if (itemAmount.ContainsKey(items.Id))
+                {
+                    itemAmount[items.Id] += 1;
+                }
+                else
+                {
+                    itemAmount.Add(items.Id, 1);
+                }
+            }
 
+            var order = new Order()
+            {
+                ItemsAmount = itemAmount,
+                TotalPrice = TotalPrice,
+                UserId = ApplicationInfo.CurrentUser.Id
+            };
+            await Service.CreateOrder(order);
         }
     }
 }

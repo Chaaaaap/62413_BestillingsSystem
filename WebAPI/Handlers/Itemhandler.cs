@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Common;
 using Common.Models;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -15,7 +16,8 @@ namespace WebAPI.Handlers
         public ItemHandler(MySqlConnection conn = null)
         {
             _conn = conn ?? new MySqlConnection(AppSettings.ConnectionString);
-            _conn.Open();
+            if (_conn.State != ConnectionState.Open)
+                _conn.Open();
         }
 
         public void CreateItem(Item item)

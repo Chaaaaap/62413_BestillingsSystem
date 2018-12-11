@@ -213,6 +213,25 @@ namespace DesktopClient
             }
             return null;
         }
+
+        public static async Task<Order> CreateOrder(Order order)
+        {
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationInfo.CurrentUser.Token);
+
+            var myContent = JsonConvert.SerializeObject(order);
+
+            var stringContent = new StringContent(myContent, UnicodeEncoding.UTF8, "application/json");
+
+            var response = await HttpClient.PostAsync(ApplicationInfo.WebApiKey + "/order/", stringContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+
+            return await JsonUtility.ParseJson<Order>(response);
+        }
+
         #endregion
     }
 }

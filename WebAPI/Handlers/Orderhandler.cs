@@ -29,16 +29,19 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@TotalPrice", order.TotalPrice);
 
             cmd.ExecuteNonQuery();
+            var tmpId = cmd.LastInsertedId;
 
             foreach (var element in order.ItemsAmount)
             {
-                sql = "INSERT INTO OrdersItem (OrderId, ItemId, Amount) VALUES (@OrderId, @ItemId, @Amount);";
+                sql = "INSERT INTO OrdersItem (OrderId, ItemsId, Amount) VALUES (@OrderId, @ItemId, @Amount);";
                 cmd = new MySqlCommand(sql, _conn);
 
-                cmd.Parameters.AddWithValue("@OrderId", Convert.ToInt64(cmd.LastInsertedId));
+                cmd.Parameters.AddWithValue("@OrderId", tmpId);
                 cmd.Parameters.AddWithValue("@ItemId", element.Key);
                 cmd.Parameters.AddWithValue("@Amount", element.Value);
 
+                cmd.ExecuteNonQuery();
+                
 
                 itemHandler.UpdateAmount(element.Key, -element.Value);
             }
