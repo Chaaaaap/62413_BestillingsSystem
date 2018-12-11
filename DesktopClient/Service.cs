@@ -174,6 +174,20 @@ namespace DesktopClient
             return item;
         }
 
+        public static async Task<Item> GetItem(long id)
+        {
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationInfo.CurrentUser.Token);
+
+            var response = await HttpClient.GetAsync(ApplicationInfo.WebApiKey + "/item/" + id);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpException();
+            }
+
+            return await JsonUtility.ParseJson<Item>(response);
+        }
+
         public static async Task<HttpResponseMessage> DeleteItem(Item item)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationInfo.CurrentUser.Token);
@@ -184,6 +198,20 @@ namespace DesktopClient
                 throw new HttpException();
             }
             return response;
+        }
+        #endregion
+
+        #region Orders
+        public static async Task<List<Order>> GetAllOrders(long id)
+        {
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationInfo.CurrentUser.Token);
+            var response = await HttpClient.GetAsync(ApplicationInfo.WebApiKey + "/order/user/"+id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonUtility.ParseJson<List<Order>>(response);
+            }
+            return null;
         }
         #endregion
     }

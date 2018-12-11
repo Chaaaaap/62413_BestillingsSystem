@@ -14,6 +14,9 @@
         <DataTemplate DataType="{x:Type localvm:AdministratorViewModel}">
             <local:AdministratorView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type localvm:OrderHistoryViewModel}">
+            <local:OrderHistoryView/>
+        </DataTemplate>
     </Window.Resources>
 
     <!--<StackPanel>
@@ -26,53 +29,34 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="56"/>
             </Grid.RowDefinitions>
-                <ItemsControl ItemsSource="{Binding PageViewModels}">
+            <ItemsControl ItemsSource="{Binding PageViewModels}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Height="56" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" Background="{StaticResource RibbonBackgroundBrush}">
-                                <Button.Content>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0" Source="{Binding Icon}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                
-                </ItemsControl>
+                    <DataTemplate>
+                        <Button Height="56" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" Background="{StaticResource RibbonBackgroundBrush}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="{Binding Icon}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
         </Grid>
         <Rectangle Stroke="Black" StrokeThickness="1" Margin="0,5,0,5"/>
 
         <ContentControl Content="{Binding CurrentPageViewModel}" />
 
     </StackPanel>
-
-    
-    <!--<DockPanel>-->
-        <!--<Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">
-            <ItemsControl ItemsSource="{Binding PageViewModels}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding Name}"
-                                Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                CommandParameter="{Binding }"
-                                Margin="2,5"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Border>
-
-        <ContentControl Content="{Binding CurrentPageViewModel}" />
-    </DockPanel>-->
-
 </Window>

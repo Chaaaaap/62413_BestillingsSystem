@@ -21,9 +21,10 @@ namespace DesktopClient.ViewModels
         {
             PageViewModels.Add(new ItemOverviewViewModel(this));
             PageViewModels.Add(new AdministratorViewModel(this));
+            PageViewModels.Add(new OrderHistoryViewModel(this));
 
             // Set starting page
-            CurrentPageViewModel = PageViewModels[0];
+            CurrentPageViewModel = PageViewModels[2];
         }
 
         public ICommand ChangePageCommand
@@ -63,7 +64,7 @@ namespace DesktopClient.ViewModels
                 if (_currentPageViewModel != value)
                 {
                     _currentPageViewModel = value;
-                    OnPropertyChanged("CurrentPageViewModel");
+                    OnPropertyChanged(nameof(CurrentPageViewModel));
                 }
             }
         }
