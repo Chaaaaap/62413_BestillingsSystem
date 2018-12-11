@@ -118,7 +118,7 @@ namespace WebAPI.Handlers
 
         public Item GetItem(long id)
         {
-            var sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId inner join ItemPictures on Items.Id = ItemPictures.ItemId where Id = @Id;";
+            var sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId inner join ItemPictures on Items.Id = ItemPictures.ItemId where Items.Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);

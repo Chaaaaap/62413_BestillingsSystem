@@ -36,11 +36,11 @@ namespace WebAPI.Handlers
                 cmd = new MySqlCommand(sql, _conn);
 
                 cmd.Parameters.AddWithValue("@OrderId", Convert.ToInt64(cmd.LastInsertedId));
-                cmd.Parameters.AddWithValue("@ItemId", element.Key.Id);
+                cmd.Parameters.AddWithValue("@ItemId", element.Key);
                 cmd.Parameters.AddWithValue("@Amount", element.Value);
 
 
-                itemHandler.UpdateAmount(element.Key.Id, -element.Value);
+                itemHandler.UpdateAmount(element.Key, -element.Value);
             }
         }
 
@@ -66,7 +66,7 @@ namespace WebAPI.Handlers
             cmd.ExecuteNonQuery();
 
             foreach (var element in order.ItemsAmount){
-                itemHander.UpdateAmount(element.Key.Id, element.Value);
+                itemHander.UpdateAmount(element.Key, element.Value);
             }
 
         }
@@ -77,7 +77,7 @@ namespace WebAPI.Handlers
             var cmd = new MySqlCommand(sql, _conn);
 
             Order order = null;
-            var itemAmount = new Dictionary<Item, int>();
+            var itemAmount = new Dictionary<long, int>();
             var orderList = new List<Order>();
             long orderId = -1;
 
@@ -91,16 +91,7 @@ namespace WebAPI.Handlers
                     orderList.Add(order);
                     itemAmount.Clear();
                 };
-
-                Item item = new Item
-                {
-                    Id = Convert.ToInt64(dataReader["ItemsId"].ToString()),
-                    Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
-                    Name = dataReader["Name"].ToString(),
-                    Price = Convert.ToDouble(dataReader["Price"].ToString())
-                };
-
-                itemAmount.Add(item, Convert.ToInt32(dataReader["Amount"].ToString()));
+                itemAmount.Add(Convert.ToInt64(dataReader["ItemsId"].ToString()), Convert.ToInt32(dataReader["Amount"].ToString()));
                 order = new Order
                 {
                     Id = Convert.ToInt64(dataReader["OrderId"].ToString()),
@@ -116,13 +107,13 @@ namespace WebAPI.Handlers
 
         public List<Order> GetAllUserOrders(long id)
         {
-            const string sql = "select UserId, TotalPrice, OrderId, ItemsId, Amount, Storage, Name, Price from Orders inner join OrdersItem on Orders.Id = OrderId inner join Items on ItemsId = Items.Id inner join ItemStorage on ItemId = Items.Id where UserId = id;" ;
+            const string sql = "select UserId, TotalPrice, OrderId, ItemsId, Amount, Storage, Name, Price from Orders inner join OrdersItem on Orders.Id = OrderId inner join Items on ItemsId = Items.Id inner join ItemStorage on ItemId = Items.Id where UserId = @id;" ;
             var cmd = new MySqlCommand(sql, _conn);
 
-            cmd.Parameters.AddWithValue("Id", id);
+            cmd.Parameters.AddWithValue("@id", id);
 
             Order order = null;
-            var itemAmount = new Dictionary<Item, int>();
+            var itemAmount = new Dictionary<long, int>();
             var orderList = new List<Order>();
             long orderId = -1;
 
@@ -132,20 +123,15 @@ namespace WebAPI.Handlers
                 if (orderId != Convert.ToInt64(dataReader["OrderId"].ToString()))
                 {
                     orderId = Convert.ToInt64(dataReader["OrderId"].ToString());
-                    order.ItemsAmount = itemAmount;
-                    orderList.Add(order);
-                    itemAmount.Clear();
+                    if (order != null)
+                    {
+                        order.ItemsAmount = itemAmount;
+                        orderList.Add(order);
+                        itemAmount.Clear();
+                    }
                 };
-
-                Item item = new Item
-                {
-                    Id = Convert.ToInt64(dataReader["ItemsId"].ToString()),
-                    Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
-                    Name = dataReader["Name"].ToString(),
-                    Price = Convert.ToDouble(dataReader["Price"].ToString())
-                };
-
-                itemAmount.Add(item, Convert.ToInt32(dataReader["Amount"].ToString()));
+                
+                itemAmount.Add(Convert.ToInt64(dataReader["ItemsId"].ToString()), Convert.ToInt32(dataReader["Amount"].ToString()));
                 order = new Order
                 {
                     Id = Convert.ToInt64(dataReader["OrderId"].ToString()),
@@ -166,21 +152,13 @@ namespace WebAPI.Handlers
             cmd.Parameters.AddWithValue("@Id", id);
 
             Order order = null;
-            var itemAmount = new Dictionary<Item, int>();
+            var itemAmount = new Dictionary<long, int>();
 
             var dataReader = cmd.ExecuteReader();
             while (dataReader.Read())
             {
-                Item item = new Item
-                {
-                    Id = Convert.ToInt64(dataReader["ItemsId"].ToString()),
-                    Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
-                    Name = dataReader["Name"].ToString(),
-                    Price = Convert.ToDouble(dataReader["Price"].ToString())
-
-                };
-
-                itemAmount.Add(item, Convert.ToInt32(dataReader["Amount"].ToString()));
+                itemAmount.Add(Convert.ToInt64(dataReader["ItemsId"].ToString()), Convert.ToInt32(dataReader["Amount"].ToString()));
+                itemAmount.Add(Convert.ToInt64(dataReader["ItemsId"].ToString()), Convert.ToInt32(dataReader["Amount"].ToString()));
                 
                 order = new Order
                 {
