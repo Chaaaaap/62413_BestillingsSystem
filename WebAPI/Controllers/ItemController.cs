@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public ActionResult<Item> GetItem(int id)
+        public ActionResult<Item> GetItem(long id)
         {
             try
             {

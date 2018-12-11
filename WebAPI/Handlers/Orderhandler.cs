@@ -112,7 +112,7 @@ namespace WebAPI.Handlers
 
         public List<Order> GetAllUserOrders(long id)
         {
-            const string sql = "select UserId, TotalPrice, OrderId, ItemsId, Amount, Storage, Name, Price from Orders inner join OrdersItem on Orders.Id = OrderId inner join Items on ItemsId = Items.Id inner join ItemStorage on ItemId = Items.Id where UserId = @id;" ;
+            const string sql = "select UserId, TotalPrice, OrderId, ItemsId, Amount, Storage, Name, Price from Orders inner join OrdersItem on Orders.Id = OrderId inner join Items on ItemsId = Items.Id inner join ItemStorage on ItemId = Items.Id where UserId = @id order by OrderId desc;" ;
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@id", id);
@@ -130,7 +130,8 @@ namespace WebAPI.Handlers
                     orderId = Convert.ToInt64(dataReader["OrderId"].ToString());
                     if (order != null)
                     {
-                        order.ItemsAmount = itemAmount;
+                        Dictionary<long, int> tmpItemAmount = new Dictionary<long, int>(itemAmount);
+                        order.ItemsAmount = tmpItemAmount;
                         orderList.Add(order);
                         itemAmount.Clear();
                     }
@@ -144,8 +145,12 @@ namespace WebAPI.Handlers
                     TotalPrice = Convert.ToDouble(dataReader["TotalPrice"].ToString())
                 };
             }
-            order.ItemsAmount = itemAmount;
-            orderList.Add(order);
+
+            if (order != null)
+            {
+                order.ItemsAmount = itemAmount;
+                orderList.Add(order);
+            }
 
             dataReader.Close();
             return orderList;

@@ -41,13 +41,7 @@ namespace WebAPI.Handlers
 
             cmd.ExecuteNonQuery();
 
-            sql = "INSERT INTO ItemPictures () VALUES (@ItemId, @Picture);";
-            cmd = new MySqlCommand(sql, _conn);
-
-            cmd.Parameters.AddWithValue("@ItemId", id);
-            cmd.Parameters.AddWithValue("@Picture", item.Picture);
-
-            cmd.ExecuteNonQuery();
+            AddItemPicture(id, item.Picture);
         }
 
         public void UpdateAmount(long id, int amount)
@@ -121,7 +115,7 @@ namespace WebAPI.Handlers
 
         public Item GetItem(long id)
         {
-            var sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId inner join ItemPictures on Items.Id = ItemPictures.ItemId where Items.Id = @Id;";
+            var sql = "select Items.Id, Name, Price, Picture, Storage from Items inner join ItemStorage on Items.Id = ItemStorage.ItemId left join ItemPictures on Items.Id = ItemPictures.ItemId where Items.Id = @Id;";
             var cmd = new MySqlCommand(sql, _conn);
 
             cmd.Parameters.AddWithValue("@Id", id);
@@ -131,13 +125,17 @@ namespace WebAPI.Handlers
 
             while (dataReader.Read())
             {
+                byte[] picture = null;
+                if (dataReader["Picture"] != (DBNull.Value))
+                    picture = (byte[])dataReader["Picture"];
+
                 item = new Item
                 {
                     Id = Convert.ToInt64(dataReader["Id"].ToString()),
                     Name = dataReader["Name"].ToString(),
                     Amount = Convert.ToInt32(dataReader["Storage"].ToString()),
                     Price = Convert.ToDouble(dataReader["Price"].ToString()),
-                    Picture = (byte[]) dataReader["Picture"]
+                    Picture = picture
                 };
             }
             dataReader.Close();
@@ -157,7 +155,22 @@ namespace WebAPI.Handlers
             cmd.ExecuteNonQuery();
 
             UpdateAmount(id, item.Amount);
-            UpdatePicture(id, item.Picture);
+            sql = "SELECT * FROM ItemPictures WHERE ItemId = @ItemId;";
+            cmd = new MySqlCommand(sql, _conn);
+
+            cmd.Parameters.AddWithValue("@ItemId", id);
+            var dataReader = cmd.ExecuteReader();
+
+            if(dataReader.HasRows)
+            {
+                dataReader.Close();
+                UpdatePicture(id, item.Picture);
+            }
+            else
+            {
+                dataReader.Close();
+                AddItemPicture(id, item.Picture);
+            }
         }
 
         public byte[] GetItemPicture(long itemId)

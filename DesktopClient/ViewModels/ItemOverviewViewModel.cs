@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Common.Models;
 using DesktopClient.Events;
@@ -190,6 +191,12 @@ namespace DesktopClient.ViewModels
                 UserId = ApplicationInfo.CurrentUser.Id
             };
             await Service.CreateOrder(order);
+
+            SelectedItems.Clear();
+            MessageBox.Show(
+                "The order has been created. \nYou can now see it under \"Order history\"", 
+                "Confirmation", 
+                MessageBoxButton.OK);
         }
     }
 }
