@@ -24,7 +24,7 @@ namespace DesktopClient.Views
         public ItemOverviewView()
         {
             InitializeComponent();
-            DataContext = new ItemOverviewViewModel(null);
+            //DataContext = new ItemOverviewViewModel(null);
         }
     }
 }
