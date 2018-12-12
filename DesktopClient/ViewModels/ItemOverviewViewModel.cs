@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Common.Models;
 using DesktopClient.Events;
@@ -12,6 +13,19 @@ namespace DesktopClient.ViewModels
     public class ItemOverviewViewModel : BaseViewModel
     {
         #region UI Properties
+
+        private ObservableCollection<Item> _selectedItems = new ObservableCollection<Item>();
+        public ObservableCollection<Item> SelectedItems
+        {
+            get => _selectedItems;
+            set
+            {
+                if (_selectedItems == value)
+                    return;
+                _selectedItems = value;
+                OnPropertyChanged(nameof(SelectedItems));
+            }
+        }
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
 
         public ObservableCollection<Item> Items
@@ -23,6 +37,20 @@ namespace DesktopClient.ViewModels
                     return;
                 _items = value;
                 OnPropertyChanged(nameof(Items));
+            }
+        }
+
+        private Item _selectedItem;
+
+        public Item SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (_selectedItem == value)
+                    return;
+                _selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -51,11 +79,26 @@ namespace DesktopClient.ViewModels
             set
             {
                 if (value == _name)
-                  return;
+                    return;
                 _name = value;
                 OnPropertyChanged(Name);
             }
         }
+
+        private double _totalPrice;
+
+        public double TotalPrice
+        {
+            get => _totalPrice;
+            set
+            {
+                if (value == _totalPrice)
+                    return;
+                _totalPrice = value;
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+
         #endregion
 
         public ItemOverviewViewModel(BaseViewModel parent) : base(parent)
@@ -65,16 +108,17 @@ namespace DesktopClient.ViewModels
             PopulateItems();
         }
 
-        public Item SelectedItem;
         public ICommand SearchItemCommand { get; set; }
         public ICommand ClearSearchCommand { get; set; }
-
-
+        public ICommand AddItemToCartCommand { get; set; }
+        public ICommand PurchaseCommand { get; set; }
 
         private void InitializeCommands()
         {
             SearchItemCommand = new CommandHandler(SearchItems);
             ClearSearchCommand = new CommandHandler(ClearSearch);
+            AddItemToCartCommand = new CommandHandler(AddItemClicked);
+            PurchaseCommand = new CommandHandler(Purchase);
         }
 
         private async Task<ObservableCollection<Item>> PopulateItems()
@@ -119,9 +163,40 @@ namespace DesktopClient.ViewModels
             TmpSearch = "";
         }
 
-        public void AddItemClicked()
+        public void AddItemClicked(object sender)
         {
-            PublishEvent<ItemAddedEvent, ItemAddedEventArgs>(new ItemAddedEventArgs { ItemAdded = SelectedItem });
+            TotalPrice += SelectedItem.Price;
+            SelectedItems.Add(SelectedItem);
+        }
+
+        public async void Purchase(object sender)
+        {
+            var itemAmount = new Dictionary<long, int>();
+            foreach (var items in SelectedItems)
+            {
+                if (itemAmount.ContainsKey(items.Id))
+                {
+                    itemAmount[items.Id] += 1;
+                }
+                else
+                {
+                    itemAmount.Add(items.Id, 1);
+                }
+            }
+
+            var order = new Order()
+            {
+                ItemsAmount = itemAmount,
+                TotalPrice = TotalPrice,
+                UserId = ApplicationInfo.CurrentUser.Id
+            };
+            await Service.CreateOrder(order);
+
+            SelectedItems.Clear();
+            MessageBox.Show(
+                "The order has been created. \nYou can now see it under \"Order history\"", 
+                "Confirmation", 
+                MessageBoxButton.OK);
         }
     }
 }

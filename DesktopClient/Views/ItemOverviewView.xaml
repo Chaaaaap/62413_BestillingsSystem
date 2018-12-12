@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopClient.Views"
+             xmlns:localvm="clr-namespace:DesktopClient.ViewModels"
              mc:Ignorable="d" 
+             DataContext="{Binding Path=ItemOverviewViewModel, Source={StaticResource ViewModelLocator}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -24,13 +26,14 @@
             <Button Content="X" Foreground="Red" Margin="-15,0,0,0" Height="25" Background="Transparent" Command="{Binding ClearSearchCommand}" BorderThickness="0" Visibility="{Binding TmpSearch, Converter={StaticResource StringToVisibilityConverter}}"/>
         </StackPanel>
         <Button Grid.Column="2" Grid.Row="0" Style="{StaticResource SearchButtonStyle}" Content="Find" Command="{Binding SearchItemCommand}"/>
-        <ListView ItemsSource="{Binding Items}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" BorderThickness="1">
+        <ListView Name="ItemList" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" BorderThickness="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <Image Height="96" Width="96" Source="{Binding Picture, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
                         <TextBlock Text="{Binding Name}"/>
                         <TextBlock Text="{Binding Price}"/>
+                        <Button Width="96" Content="Add to shopping cart" Command="{Binding ElementName=ItemList, Path=DataContext.AddItemToCartCommand}" CommandParameter="{Binding ElementName=ItemList, Path=DataContext.SelectedItem}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -41,5 +44,6 @@
             </ListView.ItemsPanel>
         </ListView>
         <Rectangle Grid.Row="0" Grid.RowSpan="3" Grid.Column="3" VerticalAlignment="Stretch" Width="1" Stroke="Black" Margin="2,0,2,0"/>
+        <local:ShoppingCartView Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" />
     </Grid>
 </UserControl>

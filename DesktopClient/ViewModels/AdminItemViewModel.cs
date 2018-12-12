@@ -13,7 +13,7 @@ using Common.Models;
 
 namespace DesktopClient.ViewModels
 {
-    class AdminItemViewModel : BaseViewModel
+    public class AdminItemViewModel : BaseViewModel
     {
         public AdminItemViewModel(BaseViewModel parent) : base(parent)
         {

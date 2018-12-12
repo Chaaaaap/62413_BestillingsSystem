@@ -31,6 +31,7 @@ namespace DesktopClient.ViewModels
         protected BaseViewModel(BaseViewModel parent)
         {
             Parent = parent;
+            EventAggregator = new EventAggregator();
         }
         
         public void OnPropertyChanged(string property)
