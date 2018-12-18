@@ -6,6 +6,7 @@
         xmlns:cc="clr-namespace:WPF.Controls;assembly=WPF"
         xmlns:local="clr-namespace:DesktopClient.Views"
         xmlns:localvm="clr-namespace:DesktopClient.ViewModels"
+        Name="MainWindowView"
         Title="MainWindow" Height="516" Width="800">
     <Window.Resources>
         <DataTemplate DataType="{x:Type localvm:ItemOverviewViewModel}">
@@ -53,6 +54,7 @@
                 </ItemsControl.ItemTemplate>
 
             </ItemsControl>
+            <Button Width="50" Content="Log out" Command="{Binding LogOutCommand}" CommandParameter="{Binding ElementName=MainWindowView}"/>
         </Grid>
         <Rectangle Stroke="Black" StrokeThickness="1" Margin="0,5,0,5"/>
 

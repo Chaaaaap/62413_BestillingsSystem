@@ -7,9 +7,9 @@
              DataContext="{Binding Path=ItemOverviewViewModel, Source={StaticResource ViewModelLocator}}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <ListView ItemsSource="{Binding SelectedItems}">
-            <ListView.ItemTemplate>
+    <StackPanel Visibility="{Binding CartIsNotEmpty, Converter={StaticResource BoolToVisibilityConverter}}">
+        <ItemsControl ItemsSource="{Binding SelectedItems}" BorderThickness="0">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -17,17 +17,18 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" />
-                        <TextBlock Text="{Binding Amount}" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Text="{Binding Price}" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="{Binding Price}"/>
+                            <TextBlock Text=" DKK"/>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Button Content="Purchase" Command="{Binding PurchaseCommand}"/>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button Content="Purchase" Command="{Binding PurchaseCommand}" Margin="0,5,0,0"/>
     </StackPanel>
 </UserControl>

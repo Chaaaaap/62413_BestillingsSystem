@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Common;
 using Common.Models;
+using DesktopClient.Views;
 
 namespace DesktopClient.ViewModels
 {
@@ -17,14 +18,23 @@ namespace DesktopClient.ViewModels
         private BaseViewModel _currentPageViewModel;
         private List<BaseViewModel> _pageViewModels;
 
+        public ICommand LogOutCommand { get; private set; }
+
         public MainWindowViewModel(BaseViewModel parent) : base(parent)
         {
+            LogOutCommand = new CommandHandler(Logout);
             PageViewModels.Add(new ItemOverviewViewModel(this));
-            PageViewModels.Add(new AdministratorViewModel(this));
+            if(IsAdminVisible)
+                PageViewModels.Add(new AdministratorViewModel(this));
             PageViewModels.Add(new OrderHistoryViewModel(this));
 
             // Set starting page
-            CurrentPageViewModel = PageViewModels[2];
+            CurrentPageViewModel = PageViewModels[0];
+        }
+
+        public bool IsAdminVisible
+        {
+            get => ApplicationInfo.CurrentUser.IsAdmin;
         }
 
         public ICommand ChangePageCommand
@@ -76,6 +86,18 @@ namespace DesktopClient.ViewModels
 
             CurrentPageViewModel = PageViewModels
                 .FirstOrDefault(vm => vm == viewModel);
+        }
+
+        private void Logout(object sender)
+        {
+            if (sender is MainWindow mainWindow)
+            {
+                ApplicationInfo.CurrentUser = null;
+
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+                mainWindow.Close();
+            }
         }
     }
 }
