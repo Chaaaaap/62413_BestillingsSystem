@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Orientation="Horizontal">
             <TextBox Height="25" Text="{Binding TmpSearch}" Width="150" Padding="0,0,10,0"/>
-            <Button Content="X" Margin="-15,0,0,0" Background="Transparent" BorderThickness="0" Height="25" Foreground="Red" Command="{Binding ClearCommand}" Visibility="{Binding TmpSearch, Converter={StaticResource StringToVisibilityConverter}}"/>
+            <Button Style="{StaticResource ClearSearchButtonStyle}" Command="{Binding ClearCommand}" Visibility="{Binding TmpSearch, Converter={StaticResource StringToVisibilityConverter}}"/>
         </StackPanel>
         <Button Grid.Column="2" Height="25" Width="50" Content="Find" Padding="2,0,0,0" Command="{Binding SearchItemCommand}"/>
         <Button Grid.Column="3" Height="25" Width="100" Content="Create Item" Padding="2,0,0,0" Command="{Binding AdminCreateItemCommand}"/>

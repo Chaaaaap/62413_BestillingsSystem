@@ -40,6 +40,22 @@
         <Setter Property="Height" Value="25" />
         <Setter Property="Padding" Value="2,0,0,0" />
     </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="ClearSearchButtonStyle">
+        <Setter Property="Content" Value="X" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="Margin" Value="-15,0,0,0" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="RibbonButtonStyle">
+        <Setter Property="Margin" Value="2,0,2,0" />
+        <Setter Property="Width" Value="96" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
     <!--#endregion-->
     <Style TargetType="{x:Type Control}" x:Key="AdminTextBox">
         <Setter Property="Margin" Value="0,0,0,10"/>

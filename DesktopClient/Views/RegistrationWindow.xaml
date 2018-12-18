@@ -14,18 +14,23 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <cc:TextBox Grid.Row="0" Text="{Binding Username}" 
-                    Style="{StaticResource LoginPage}"
-                    Watermark="Username"/>
-        <PasswordBox Grid.Row="1" 
+        <Label Grid.Row="0" Content="Username" Style="{StaticResource LoginPageLabel}"/>
+        <cc:TextBox Grid.Row="1" Text="{Binding Username}" 
+                    Style="{StaticResource LoginPage}"/>
+
+        <Label Grid.Row="2" Content="Password" Style="{StaticResource LoginPageLabel}"/>
+        <PasswordBox Grid.Row="3" 
                     Style="{StaticResource LoginPage}" />
-        <cc:TextBox Grid.Row="2" Text="{Binding Email}" 
-                    Style="{StaticResource LoginPage}"
-                    Watermark="E-mail"/>
-        <Button Grid.Row="3"
+
+        <Label Grid.Row="4" Content="Email" Style="{StaticResource LoginPageLabel}" />
+        <cc:TextBox Grid.Row="5" Text="{Binding Email}" 
+                    Style="{StaticResource LoginPage}"/>
+        <Button Grid.Row="6"
                 Command="{Binding RegisterCommand}"
                 CommandParameter="{Binding ElementName=RegisterView}"
                 Style="{StaticResource LoginPage}"

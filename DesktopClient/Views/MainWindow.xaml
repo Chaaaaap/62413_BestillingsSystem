@@ -38,14 +38,14 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Height="56" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }" Background="{StaticResource RibbonBackgroundBrush}">
+                        <Button Style="{StaticResource RibbonButtonStyle}" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding }">
                             <Button.Content>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0" Source="{Binding Icon}"/>
+                                    <!--<Image Grid.Column="0" Source="{Binding Icon}"/>-->
                                     <TextBlock Grid.Column="1" Text="{Binding Name}"/>
                                 </Grid>
                             </Button.Content>
@@ -54,7 +54,7 @@
                 </ItemsControl.ItemTemplate>
 
             </ItemsControl>
-            <Button Width="50" Content="Log out" Command="{Binding LogOutCommand}" CommandParameter="{Binding ElementName=MainWindowView}"/>
+            <Button Style="{StaticResource RibbonButtonStyle}" Content="Log out" Command="{Binding LogOutCommand}" CommandParameter="{Binding ElementName=MainWindowView}"/>
         </Grid>
         <Rectangle Stroke="Black" StrokeThickness="1" Margin="0,5,0,5"/>
 
