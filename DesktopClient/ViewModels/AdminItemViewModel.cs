@@ -295,6 +295,7 @@ namespace DesktopClient.ViewModels
             TmpPrice = null;
             TmpAmount = null;
             TmpPic = null;
+            EditItem = false;
         }
 
         public async void AdminCreateItem(object sender)
@@ -313,7 +314,9 @@ namespace DesktopClient.ViewModels
             TmpAmount = null;
             TmpPrice = null;
             TmpPic = null;
+            CreateItem = false;
             await PopulateItems();
+
         }
 
         public async void DeleteItem(object sender)
