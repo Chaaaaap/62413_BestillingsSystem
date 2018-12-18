@@ -235,6 +235,7 @@ namespace DesktopClient.ViewModels
             TmpIsAdmin = null;
             TmpPassword = null;
             await PopulateUsers();
+            CreateUser = false;
         }
 
         public async void DeleteUser(object sender)
@@ -264,6 +265,7 @@ namespace DesktopClient.ViewModels
             TmpEmail = null;
             TmpIsAdmin = null;
             TmpPassword = null;
+            EditUser = false;
         }
 
         private void CreateUserClicked(object sender)
