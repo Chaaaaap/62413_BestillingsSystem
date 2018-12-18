@@ -40,6 +40,11 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        public bool CartIsNotEmpty
+        {
+            get => SelectedItems.Count() != 0;
+        }
+
         private Item _selectedItem;
 
         public Item SelectedItem
@@ -167,6 +172,7 @@ namespace DesktopClient.ViewModels
         {
             TotalPrice += SelectedItem.Price;
             SelectedItems.Add(SelectedItem);
+            OnPropertyChanged(nameof(CartIsNotEmpty));
         }
 
         public async void Purchase(object sender)
@@ -193,6 +199,7 @@ namespace DesktopClient.ViewModels
             await Service.CreateOrder(order);
 
             SelectedItems.Clear();
+            OnPropertyChanged(nameof(CartIsNotEmpty));
             MessageBox.Show(
                 "The order has been created. \nYou can now see it under \"Order history\"", 
                 "Confirmation", 
